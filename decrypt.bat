@@ -43,8 +43,7 @@ set cipher=aes-256-cbc
     echo  :::::::::::::::::::::::::::::ooP'.8 :::::::::::::::::::::ooP'.
     echo  :::::::::::::::::::::::::::::...::..:::::::::::::::::::::...::
     echo.
-    echo           a simple wrapper for using openssl.exe to
-    echo                   encrypt and decrypt files.
+    echo     a simple wrapper for using openssl.exe to decrypt files
     echo              batch file created by wasatchwizard
     echo.
     echo    input file: %infile%
