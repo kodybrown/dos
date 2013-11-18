@@ -21,6 +21,8 @@ set cipher=aes-256-cbc
 
 :main
     if "%~1"=="" goto :usage
+    if "%~1"=="/?" goto :usage
+    if "%~1"=="--help" goto :usage
 
     set infile=%~1
     set tmpfile=%~1.decrypted
