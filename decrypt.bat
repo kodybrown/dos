@@ -5,6 +5,8 @@
 :: See the bottom of the file for usage.
 :: created by wasatchwizard
 
+:: http://tombuntu.com/index.php/2007/12/12/simple-file-encryption-with-openssl/
+
 :: This batch requires [`openssl.exe`](http://www.openssl.org/) to be in your path.
 :: You can get Windows binaries (or an installer) from the following:
 :: * [Binary Distributions](http://www.openssl.org/related/binaries.html)
