@@ -5,24 +5,24 @@ Some of my batch files and scripts
 
 # DOS environment
 
-blah blah
 
 While I have tried to always make my batch files work in any environment, you may need to change some variables, envars, and/or paths to suit your needs and your computer environment.
 
 ### Expected environment variables
 
-blah blah description blah
 
-    BIN         This is where all of my utilities live. Within this folder
-                is the apps folder (`%bin%\apps`). Any utility that is larger
-                than one or two files is put in apps within its own folder
-                (such as `%bin%\apps\tcmd`).
+    BIN         This is where all of my utilities live (C:\tools). This
+                includes my exe's and all of my batch and script files. Within
+                this folder is an apps folder (`%bin%\apps`). Any utility that
+                is larger than one or two files, is put here with its own sub-
+                directory (such as `%bin%\apps\tcmd`). I create a .bat or .lnk
+                file in %bin% to the main util exe buried in the sub-directory.
 
-    PROFILE     Generally, this is the same as %UserProfile%. The reason I
-                have a separate envar is because I often am working on
-                someone else's computer and launch a console window to use
-                my tools. So, I can `set` the profile path without affecting
-                Windows' normal behavior, etc.
+    PROFILE     Generally, this is the same as %UserProfile%. The reason I have
+                a separate envar is because I often am working on someone
+                else's computer and launch a console window to use my tools.
+                So, I can `set` the profile path without affecting Windows'
+                normal behavior, etc.
 
     TOOLS       This is where the big tools go. Applications such as mingw, Go,
                 Git, Subversion, ADK, nodejs, mono, Python, Perl, Chocolately,
@@ -47,7 +47,7 @@ Sysinternals.
 
 #### sort.exe [mingw/cygwin]
 
-> The Microsoft version of sort.exe works just fine, but the nix version allows me to sort and remove duplicates.
+> The Microsoft version of sort.exe works just fine, but the nix version allows me to also remove duplicates.
 
 #### cat.exe
 
@@ -57,6 +57,50 @@ I am referring to my version of [cat.exe](https://github.com/kodybrown/cat), bec
 
 I am referring to my version of [sleep.exe](https://github.com/kodybrown/sleep), but any version will work assuming it's first argument is the number of milliseconds to wait before exiting.
 
+
+## Create thumbnail images from .pdf files
+
+* __pdfjpg.bat__ » Creates a thumbnail of one or more pages within one or more .pdf files. This batch file is just an easy to use wrapper for the GhostScript command-line utility `gswin64c.exe`.
+
+### Requires:
+
+* __gswin64c.exe__ » GhostScript command-line tool. [[Download](http://www.ghostscript.com/download/gsdnld.html)]
+
+### Usage:
+
+    pdf2jpg.bat | Created 2014 @wasatchwizard.
+                | Released under the MIT License.
+
+    Creates a thumbnail of pages within a .pdf file. This batch file is just an
+    easy to use wrapper for the GhostScript command-line utility `gswin64c.exe`.
+    
+      +++++++++++++++++++
+       REQUIRES:
+         gswin64c.exe (GhostScript)
+      +++++++++++++++++++
+    
+    USAGE: pdf2jpg.bat [options] [file]
+    
+      file            Creates a thumbnail of the first page of the specified file.
+      no-file         Creates a thumbnail of the first page of every .pdf file in
+                      the current directory.
+    
+    OPTIONS:
+    
+      -h --help       Displays this help.
+      -q --quiet      No output is displayed (except errors), and no input will be
+                      asked for.
+      -v --verbose    Displays extra details during processing.
+      -p --pause      Pauses when it is finished (ignored if `-q` is specified).
+      -R --recursive  Processes .pdf in sub-directories as well.
+    
+      --max n         Specify the maximum number of files to process.
+      --overwrite [yes|no|ask]
+                      Specifies what to do if the output file already exists.
+                      The default if not specified is ask. The file is ignored if
+                      `overwrite=ask` and `-quiet` is specified.
+
+> Many thanks to [KenS](http://stackoverflow.com/users/701996/kens) for pointing out [just how easy it is to use ghostscript](http://stackoverflow.com/questions/12614801/how-to-execute-imagemagick-to-convert-only-the-first-page-of-the-multipage-pdf-t) directly, instead of ImageMagick.
 
 ## Encrypting files
 
