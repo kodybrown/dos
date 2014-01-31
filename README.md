@@ -39,6 +39,25 @@ blah blah description blah
                 junction that points to my default or standard version. In this
                 case I point '%tools%\Python' (junction) to '%tools%\Python334'.
 
+### Expected executable utilities
+
+#### sdelete.exe
+
+Sysinternals.
+
+#### sort.exe [mingw/cygwin]
+
+> The Microsoft version of sort.exe works just fine, but the nix version allows me to sort and remove duplicates.
+
+#### cat.exe
+
+I am referring to my version of [cat.exe](https://github.com/kodybrown/cat), because it does beautiful word-wrapping on the command-line.
+
+#### sleep.exe
+
+I am referring to my version of [sleep.exe](https://github.com/kodybrown/sleep), but any version will work assuming it's first argument is the number of milliseconds to wait before exiting.
+
+
 ## Encrypting files
 
 * __encrypt.bat__ » a simple wrapper for using openssl.exe to easily encrypt files.
