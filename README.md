@@ -29,15 +29,15 @@ While I have tried to always make my batch files work in any environment, you ma
 
 ### Expected environment variables
 
-#### __--BIN--__
+#### __%BIN%__
 
 This is where all of my utilities live (C:\bin). This includes my exe's and all of my batch and script files. Within this folder is an apps folder (`%bin%\apps`). Any utility that is larger than one or two files, is put here with its own sub-directory (such as `%bin%\apps\tcmd`). I create a .bat or .lnk file in %bin% to the utility's main exe buried in the sub-directory.
 
-#### __--PROFILE--__
+#### __%PROFILE%__
 
 Generally, this is the same as %UserProfile%. The reason I have a separate envar is because I often am working on someone else's computer and launch a console window to use my tools. So, I can `set` the profile path without affecting Windows' normal behavior, etc.
 
-#### __--TOOLS--__
+#### __%TOOLS%__
 
 This is where the big tools go. Applications such as mingw, Go, Git, Subversion, ADK, nodejs, mono, Python, Perl, Chocolately, Vagrant, and many more all go here. This folder is HUGE.
 
