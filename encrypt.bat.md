@@ -8,56 +8,56 @@
 
 _encrypt.bat_
 ```
-                                                 o
-                                                 8
-       .oPYo. odYo. .oPYo. oPYo. o    o .oPYo.  o8P
-       8oooo8 8' '8 8    ' 8  '' 8    8 8    8   8
-       8.     8   8 8    . 8     8    8 8    8   8
-       'Yooo' 8   8 'YooP' 8     'YooP8 8YooP'   8
-     :::.....:..::..:.....:..:::::....8 8 ....:::..:::
-     ::::::::::::::::::::::::::::::ooP'.8 ::::::::::::
-     ::::::::::::::::::::::::::::::...::..::::::::::::
+                                             o
+                                             8
+   .oPYo. odYo. .oPYo. oPYo. o    o .oPYo.  o8P
+   8oooo8 8' '8 8    ' 8  '' 8    8 8    8   8
+   8.     8   8 8    . 8     8    8 8    8   8
+   'Yooo' 8   8 'YooP' 8     'YooP8 8YooP'   8
+ :::.....:..::..:.....:..:::::....8 8 ....:::..:::
+ ::::::::::::::::::::::::::::::ooP'.8 ::::::::::::
+ ::::::::::::::::::::::::::::::...::..::::::::::::
 
-       simple wrapper using openssl to encrypt files
-            batch file created by wasatchwizard
+   simple wrapper using openssl to encrypt files
+        batch file created by wasatchwizard
 
-       USAGE:
+   USAGE:
 
-       $ encrypt file
+   $ encrypt file
 
-         Performs in-place encryption of 'file'.
-         WARNING: This overwrites existing file!
+     Performs in-place encryption of 'file'.
+     WARNING: This overwrites existing file!
 
-       $ encrypt infile outfile
+   $ encrypt infile outfile
 
-         Encrypts 'infile' and saves to 'outfile'.
+     Encrypts 'infile' and saves to 'outfile'.
 ```
 
 _decrypt.bat_
 ```
-            8                                     o
-            8                                     8
-       .oPYo8 .oPYo. .oPYo. oPYo. o    o .oPYo.  o8P
-       8    8 8oooo8 8    ' 8  '' 8    8 8    8   8
-       8    8 8.     8    . 8     8    8 8    8   8
-       'YooP' 'Yooo' 'YooP' 8     'YooP8 8YooP'   8
-     :::.....::.....::.....:..:::::....8 8 ....:::..:::
-     :::::::::::::::::::::::::::::::ooP'.8 ::::::::::::
-     :::::::::::::::::::::::::::::::...::..::::::::::::
+        8                                     o
+        8                                     8
+   .oPYo8 .oPYo. .oPYo. oPYo. o    o .oPYo.  o8P
+   8    8 8oooo8 8    ' 8  '' 8    8 8    8   8
+   8    8 8.     8    . 8     8    8 8    8   8
+   'YooP' 'Yooo' 'YooP' 8     'YooP8 8YooP'   8
+ :::.....::.....::.....:..:::::....8 8 ....:::..:::
+ :::::::::::::::::::::::::::::::ooP'.8 ::::::::::::
+ :::::::::::::::::::::::::::::::...::..::::::::::::
 
-       simple wrapper using openssl to decrypt files
-            batch file created by wasatchwizard
+   simple wrapper using openssl to decrypt files
+        batch file created by wasatchwizard
 
-       USAGE:
+   USAGE:
 
-       $ decrypt file
+   $ decrypt file
 
-         Performs in-place decryption of 'file'.
-         WARNING: This overwrites existing file!
+     Performs in-place decryption of 'file'.
+     WARNING: This overwrites existing file!
 
-       $ decrypt infile outfile
+   $ decrypt infile outfile
 
-         Decrypts 'infile' and saves to 'outfile'.
+     Decrypts 'infile' and saves to 'outfile'.
 ```
 
 ## Examples:
