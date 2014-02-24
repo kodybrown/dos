@@ -31,21 +31,28 @@ While I have tried to always make my batch files work in any environment, you ma
                 I generally install tools in a 'version-less' folder, such as
                 '%tools%\mono' and '%tools%\git'. I create a new directory
                 under it with the version number in it, to use as a reference.
-                For the rare occasion there is a need to simultaneoudly install
+                For the rare occasion there is a need to simultaneously install
                 multiple versions, I include the version in the directory name.
                 The only example I have of that is Python 2.x and Python 3.x,
                 which I install to '%tools%\Python276' and '%tools%\Python334'.
                 (For my default Python version, I create an un-versioned
                 junction that points to my default or standard version. In this
                 case I point '%tools%\Python' (junction) to '%tools%\Python334'.
+                Download junction.exe [here](http://technet.microsoft.com/en-us/sysinternals/bb896768.aspx).
 
 ### Expected executable utilities
 
 #### sdelete.exe
 
-Sysinternals.
+Sysinternals is awesome. Period. A basic requirement for using and managing a Windows machine.
+
+Download: [sdelete.exe](http://technet.microsoft.com/en-us/sysinternals/bb897443.aspx)
 
 #### sort.exe [mingw/cygwin]
+
+You can build/compile your own or download one of the many fine versions available. I prefer the mingw package, but that doesn't mean anything to anyone else. For convience, I have uploaded the sort.exe from my mingw installation to my Dropbox account.
+
+Download: [sort.exe](https://dl.dropboxusercontent.com/u/123747/utils/sort.exe)
 
 > The Microsoft version of sort.exe works just fine, but the nix version allows me to also remove duplicates.
 
@@ -58,99 +65,20 @@ I am referring to my version of [cat.exe](https://github.com/kodybrown/cat), bec
 I am referring to my version of [sleep.exe](https://github.com/kodybrown/sleep), but any version will work assuming it's first argument is the number of milliseconds to wait before exiting.
 
 
+
 ## Create thumbnail images from .pdf files
 
-* __pdfjpg.bat__ » Creates a thumbnail of one or more pages within one or more .pdf files. This batch file is just an easy to use wrapper for the GhostScript command-line utility `gswin64c.exe`.
-
-### Requires:
-
-* __gswin64c.exe__ » GhostScript command-line tool. [[Download](http://www.ghostscript.com/download/gsdnld.html)]
-
-### Usage:
-
-    pdf2jpg.bat | Created 2014 @wasatchwizard.
-                | Released under the MIT License.
-
-    Creates a thumbnail of pages within a .pdf file. This batch file is just an
-    easy to use wrapper for the GhostScript command-line utility `gswin64c.exe`.
-
-      +++++++++++++++++++
-       REQUIRES:
-         gswin64c.exe (GhostScript)
-      +++++++++++++++++++
-
-    USAGE: pdf2jpg.bat [options] [file]
-
-      file            Creates a thumbnail of the first page of the specified file.
-      no-file         Creates a thumbnail of the first page of every .pdf file in
-                      the current directory.
-
-    OPTIONS:
-
-      -h --help       Displays this help.
-      -q --quiet      No output is displayed (except errors), and no input will be
-                      asked for.
-      -v --verbose    Displays extra details during processing.
-      -p --pause      Pauses when it is finished (ignored if `-q` is specified).
-      -R --recursive  Processes .pdf in sub-directories as well.
-
-      --max n         Specify the maximum number of files to process.
-      --overwrite [yes|no|ask]
-                      Specifies what to do if the output file already exists.
-                      The default if not specified is ask. The file is ignored if
-                      `overwrite=ask` and `-quiet` is specified.
-
-> Many thanks to [KenS](http://stackoverflow.com/users/701996/kens) for pointing out [just how easy it is to use ghostscript](http://stackoverflow.com/questions/12614801/how-to-execute-imagemagick-to-convert-only-the-first-page-of-the-multipage-pdf-t) directly, instead of ImageMagick.
+* [__pdf2jpg.bat__](https://github.com/kodybrown/dos/blob/master/pdf2jpg.bat) » Creates a thumbnail of one or more pages within one or more .pdf files. This batch file is just an easy to use wrapper for the GhostScript command-line utility `gswin64c.exe`.
+* [Documentation](https://github.com/kodybrown/dos/blob/master/pdf2jpg.bat.md)
 
 ## Encrypting files
 
-* __encrypt.bat__ » a simple wrapper for using openssl.exe to easily encrypt files.
-* __decrypt.bat__ » a simple wrapper for using openssl.exe to easily decrypt files.
+* [__encrypt.bat__](https://github.com/kodybrown/dos/blob/master/encrypt.bat) » a simple wrapper for using openssl.exe to easily _encrypt_ files.
+* [__decrypt.bat__](https://github.com/kodybrown/dos/blob/master/decrypt.bat) » a simple wrapper for using openssl.exe to easily _decrypt_ files.
+* [Documentation](https://github.com/kodybrown/dos/blob/master/encrypt.bat.md)
 
-### Usage:
-
-The `encrypt.bat` and `decrypt.bat` files behave the same. So, in the examples below you can use encrypt or decrypt.
-
-To show usage information:
-
-    encrypt
-    encrypt /?
-    encrypt --help
-
-To encrypt a file in-place (the original file is overwritten with the newly encrypted file):
-
-    encrypt file
-
-To encrypt a file and save the output into a new file (the original file is not touched):
-
-    encrypt infile outfile
 
 ## Editing multiple shortcut (.lnk) files
 
-* __editlinks.vbs__ » modifies specified shortcut (.lnk) file's paths, including the target, directory, icon, and description (if applicable).
-
-### Usage:
-
-The script file
-
-There is no usage information provided by the script itself, so here it is:
-
-    USAGE:
-      editlinks.vbs [/s|--recursive] [--path C:\somewhere] "replace" "with" ["replace" "with"] ["replace" "with"] ...
-
-This will update all paths:
-
-* Target — the application linked to
-* Start in — the starting directory
-* Icon — the location of the icon
-
-It will also empty the description property/field if it matches (exactly) the Target.
-
-Here is an example:
-
-    > editlinks.vbs --path "C:\new-bin" "C:\old-bin" "C:\new-bin"
-
-This will change all shortcuts that point to 'C:\old-bin' to point instead to 'C:\new-bin'.
-
-> NOTE: When retrieving the TargetPath from a shortcut, it will (sometimes?) expand any environment variables already in it. This will cause the number of changed files to seem quite large (and never go down).
-
+* [__editlinks.vbs__](https://github.com/kodybrown/dos/blob/master/editlinks.vbs) » modifies specified shortcut (.lnk) file's paths, including the target, directory, icon, and description (if applicable).
+* [Documentation](https://github.com/kodybrown/dos/blob/master/editlinks.vbs.md)
