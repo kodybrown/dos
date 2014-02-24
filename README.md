@@ -14,11 +14,18 @@ Some of my batch files and scripts. Jump to the bottom for details about how I h
 * [__decrypt.bat__](https://github.com/kodybrown/dos/blob/master/decrypt.bat) » a simple wrapper for using openssl.exe to easily _decrypt_ files.
 * [Documentation](https://github.com/kodybrown/dos/blob/master/encrypt.bat.md)
 
-
 ### Editing multiple shortcut (.lnk) files
 
 * [__editlinks.vbs__](https://github.com/kodybrown/dos/blob/master/editlinks.vbs) » modifies specified shortcut (.lnk) file's paths, including the target, directory, icon, and description (if applicable).
 * [Documentation](https://github.com/kodybrown/dos/blob/master/editlinks.vbs.md)
+
+### Easily edit the PATH environment variable
+
+* [__edpath.bat__](https://github.com/kodybrown/dos/blob/master/edpath.bat) » easily edit the PATH environment variable with a few options (such as --prepend, --remove, --force, etc.).
+* [Documentation](https://github.com/kodybrown/dos/blob/master/edpath.bat.md)
+
+
+
 
 <p>&nbsp;</p>
 
