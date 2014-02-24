@@ -1,7 +1,7 @@
 
 # Editing multiple shortcut (.lnk) files
 
-* __editlinks.vbs__ » modifies specified shortcut (.lnk) file's paths, including the target, directory, icon, and description (if applicable).
+* [__editlinks.vbs__](https://github.com/kodybrown/dos/blob/master/editlinks.vbs) » modifies specified shortcut (.lnk) file's paths, including the target, directory, icon, and description (if applicable).
 
 ## Usage:
 
