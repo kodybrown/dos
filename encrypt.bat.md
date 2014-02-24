@@ -6,8 +6,8 @@
 
 ## Usage:
 
-encrypt.bat
-
+_encrypt.bat_
+```
                                                  o
                                                  8
        .oPYo. odYo. .oPYo. oPYo. o    o .oPYo.  o8P
@@ -31,10 +31,10 @@ encrypt.bat
        $ encrypt infile outfile
 
          Encrypts 'infile' and saves to 'outfile'.
+```
 
-
-decrypt.bat
-
+_decrypt.bat_
+```
             8                                     o
             8                                     8
        .oPYo8 .oPYo. .oPYo. oPYo. o    o .oPYo.  o8P
@@ -58,6 +58,7 @@ decrypt.bat
        $ decrypt infile outfile
 
          Decrypts 'infile' and saves to 'outfile'.
+```
 
 ## Examples:
 
