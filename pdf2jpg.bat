@@ -29,7 +29,7 @@ goto :init
     echo   file            Creates a thumbnail of the first page of the specified file.
     echo   no-file         Creates a thumbnail of the first page of every .pdf file in
     echo                   the current directory.
-        echo.
+    echo.
     echo OPTIONS:
     echo.
     echo   -h --help       Displays this help.
@@ -39,11 +39,21 @@ goto :init
     echo   -p --pause      Pauses when it is finished (ignored if `-q` is specified).
     echo   -R --recursive  Processes .pdf in sub-directories as well.
     echo.
-    echo   --max n         Specify the maximum number of files to process.
+    echo   --max n         Specify the maximum number of .pdf files to process. (optional)
+    echo                   The default is 0, which means to process all files found.
     echo   --overwrite [yes^|no^|ask]
     echo                   Specifies what to do if the output file already exists.
     echo                   The default if not specified is ask. The file is ignored if
     echo                   `overwrite=ask` and `-quiet` is specified.
+    echo.
+    echo   --firstp        Specifies the (first) page to output. (optional)
+    echo                   The default is page 1.
+    echo   --lastp         Specifies the last page to ouput. (optional)
+    echo                   The default is page 1.
+    echo             NOTE: Whenever `firstp` is set, `lastp` is set to the same value.
+    echo                   This allows you to output any one page using only the `firstp`
+    echo                   parameter. If you want a range of pages output, be sure to
+    echo                   set `firstp` then `lastp` in your arguments.
     goto :eof
 
 :init ()
@@ -78,6 +88,11 @@ goto :init
     :: > NOTE: If you specify `quiet=true` and `overwrite=ask`
     :: >       each file (with existing output file) be skipped.
     set __overwrite=ask
+
+    :: Use `folder.jpg` as the image name AND create a
+    :: `desktop.ini` file pointing to `folder.jpg` for the
+    :: directory's image.
+    set __folderjpg=
 
     :: `__pause` indicates to pause at the end.
     set __pause=
@@ -143,6 +158,28 @@ goto :init
     if /i "%~1"=="--overwrite=yes" set "__overwrite=yes" && shift && goto :parse
     if /i "%~1"=="--overwrite=no" set "__overwrite=no" && shift && goto :parse
     if /i "%~1"=="--overwrite=ask" set "__overwrite=ask" && shift && goto :parse
+
+    rem gswin64c parameters.
+    if /i "%~1"=="--firstp" set /a "firstp=%~2" && set /a "lastp=%~2" && shift && shift && goto :parse
+    if /i "%~1"=="-firstp" set /a "firstp=%~2" && set /a "lastp=%~2" && shift && shift && goto :parse
+
+    if /i "%~1"=="--lastp" set /a "lastp=%~2" && shift && shift && goto :parse
+    if /i "%~1"=="-lastp" set /a "lastp=%~2" && shift && shift && goto :parse
+
+    if /i "%~1"=="--size" set "size=%~2" && shift && shift && goto :parse
+    if /i "%~1"=="-size" set "size=%~2" && shift && shift && goto :parse
+
+    if /i "%~1"=="--res" set /a "res=%~2" && shift && shift && goto :parse
+    if /i "%~1"=="-res" set /a "res=%~2" && shift && shift && goto :parse
+
+    if /i "%~1"=="--device" set "device=%~2" && shift && shift && goto :parse
+    if /i "%~1"=="-device" set "device=%~2" && shift && shift && goto :parse
+
+    if /i "%~1"=="--filext" set "filext=%~2" && shift && shift && goto :parse
+    if /i "%~1"=="-filext" set "filext=%~2" && shift && shift && goto :parse
+
+    if /i "%~1"=="--folderjpg" set "__folderjpg=true" && shift && goto :parse
+    if /i "%~1"=="-folderjpg" set "__folderjpg=true" && shift && goto :parse
 
 :main ()
     :: Validate `__overwrite`.
@@ -217,9 +254,23 @@ goto :init
         goto :eof
 
     :singlefile_go_okay
+        :: Use the .
+        if defined __folderjpg set outfile=folder.jpg
+        if not defined __folderjpg set outfile=%~dpn1.%filext%
+
         :: -g%size%
-        call "%gswin64c%" -dNOPAUSE -dBATCH -r%res% -sDEVICE=%device% -sOutputFile="%~dpn1.%filext%" -dFirstPage=%firstp% -dLastPage=%lastp% "%~1" %hideoutput%
+        call "%gswin64c%" -dNOPAUSE -dBATCH -r%res% -sDEVICE=%device% -sOutputFile="%outfile%" -dFirstPage=%firstp% -dLastPage=%lastp% "%~1" %hideoutput%
         if %errorlevel% NEQ 0 echo **** ERROR: Could not convert file.
+
+        :: Create the desktop.ini file.
+        if not defined __folderjpg goto :skipdesktopini
+        if not exist desktop.ini goto :writedesktopini
+        goto :skipdesktopini
+        :writedesktopini
+            echo [.ShellClassInfo]>desktop.ini
+            echo IconFile=folder.jpg>>desktop.ini
+            attrib +a +h +s desktop.ini
+        :skipdesktopini
 
     goto :eof
 
