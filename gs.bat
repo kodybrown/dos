@@ -1,0 +1,1 @@
+@"%~dp0git.bat" status %*
