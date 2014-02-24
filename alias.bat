@@ -1,6 +1,7 @@
 @echo off
 
 if not defined __DOSKEY_MACROFILE set __DOSKEY_MACROFILE=%Profile%\.doskey_macros
+set __DOSKEY_MACROFILE_BACKUP=%Profile%\Settings\AutoBackup\doskey_macros
 
 :init
     set doskey=C:\Windows\System32\doskey.exe
@@ -152,7 +153,7 @@ if not defined __DOSKEY_MACROFILE set __DOSKEY_MACROFILE=%Profile%\.doskey_macro
     rem     call :savemacros no-backup
     rem )
 
-    set BackupFile=%__DOSKEY_MACROFILE%(%yy%-%mm%-%dd%-%hh%-%nn%-%ss%).backup
+    set BackupFile=%__DOSKEY_MACROFILE_BACKUP%.%yy%%mm%%dd%-%hh%%nn%%ss%.txt
     copy /Y "%__DOSKEY_MACROFILE%" "%BackupFile%" >NUL 2>&1
 
     if not "%~1"=="no-save" (

@@ -1,6 +1,7 @@
 @echo off
 
 if not defined __DOSKEY_HISTORYFILE set __DOSKEY_HISTORYFILE=%Profile%\.doskey_history
+set __DOSKEY_HISTORYFILE_BACKUP=%Profile%\Settings\AutoBackup\doskey_history
 
 set doskey=C:\Windows\System32\doskey.exe
 set sort=%tools%\mingw\msys\1.0\bin\sort.exe
@@ -110,7 +111,7 @@ set __sessiononly=
     rem     call :savehistory no-backup
     rem )
 
-    set BackupFile=%__DOSKEY_HISTORYFILE%(%yy%-%mm%-%dd%-%hh%-%nn%-%ss%).backup
+    set BackupFile=%__DOSKEY_HISTORYFILE_BACKUP%.%yy%%mm%%dd%-%hh%%nn%%ss%.txt
     copy /Y "%__DOSKEY_HISTORYFILE%" "%BackupFile%" >NUL 2>&1
 
     if not "%~1"=="no-save" (
