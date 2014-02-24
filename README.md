@@ -41,7 +41,7 @@ Generally, this is the same as %UserProfile%. The reason I have a separate envar
 
 This is where the big tools go. Applications such as mingw, Go, Git, Subversion, ADK, nodejs, mono, Python, Perl, Chocolately, Vagrant, and many more all go here. This folder is HUGE.
 
-I generally install tools in a 'version-less' folder, such as `'%tools%\mono'` and `'%tools%\git'`. I create a new directory under it with the version number in it, to use as a reference. For the rare occasion there is a need to simultaneously install multiple versions, I include the version in the directory name. The only example I have of that is Python 2.x and Python 3.x, which I install to `'%tools%\Python276'` and `'%tools%\Python334'`. (For my default Python version, I create an un-versioned junction that points to my default or standard version. In this case I point `%tools%\Python` (junction) to `%tools%\Python334`. See link below to download junction.exe.
+I generally install tools in a 'version-less' folder, such as `%tools%\mono` and `%tools%\git`. I create a new directory under it with the version number in it, to use as a reference. For the rare occasion there is a need to simultaneously install multiple versions, I include the version in the directory name. The only example I have of that is Python 2.x and Python 3.x, which I install to `%tools%\Python276` and `%tools%\Python334`. (For my default Python version, I create an un-versioned junction that points to my default or standard version. In this case I point `%tools%\Python` (junction) to `%tools%\Python334`. See link below to download junction.exe.
 
 ## Expected executable utilities
 
