@@ -69,6 +69,9 @@ If args.Count > 0 Then
 End If
 
 If Not useCustomValues Then
+    ' TODO: YOU REALLY NEED TO CHANGE THESE DEFAULTS TO YOUR OWN!!
+    ' The items are a one-to-one match between the two arrays.. as in,
+    ' element 1 of ChangeFrom coincides with element 1 of ChangeTo.
     ChangeFrom = Array("Dropbox\", "c:\bin", "%SystemDrive%\bin", "c:\root", "%SystemDrive%\root", "c:\users\kody\root", "%userprofile%\root", "%profile%\root", "%UserProfile%", "C:\Users\Kody", "%HOMEDRIVE%%HOMEPATH%", "C:\Users\i92102", "%bin%\Apps\", "C:\bin\Apps\")
     ChangeTo = Array("", "%bin%", "%bin%", "%bin%", "%bin%", "%bin%", "%bin%", "%bin%", "%Profile%", "%Profile%", "%Profile%", "%Profile%", "%bin%\apps\", "%bin%\apps\")
 End If
