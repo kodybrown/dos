@@ -15,7 +15,7 @@ echo 06   06h   Invalid handle
 echo 07   07h   Memory control block destroyed
 echo 08   08h   Insufficient memory
 echo 09   09h   Memory block address invalid
-echo 10   0Ah   Environment invalid (usually >32k in length)
+echo 10   0Ah   Environment invalid (usually ^>32k in length)
 echo 11   0Bh   Format invalid
 echo 12   0Ch   Access code invalid
 echo 13   0Dh   Data invalid
