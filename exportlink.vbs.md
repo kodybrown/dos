@@ -45,13 +45,13 @@ This sets the properties in 'Beyond Compare 3.lnk' from the values in the 'Beyon
 
 1. Create a new File Format named `Shortcuts`.
 2. On the 'General' tab,
-   a. Change the 'Mask' to `*.lnk`.
+2a. Change the 'Mask' to `*.lnk`.
 3. On the 'Conversion' tab,
-   a. In the 'Conversion' drop-down, select `External program (ANSI filename)`.
-   b. Set the 'Loading' text-box to `wscript.exe Helpers\exportlink.vbs %s %t`.
-   c. Make sure 'Disable editing' is unchecked.
-   d. Set the 'Saving' text-box to `wscript.exe Helpers\exportlink.vbs --update %s %t %n`.
-   e. Make sure 'Trim trailing whitespace' is unchecked (or could show the files as different after a save, until the comparison is reloaded).
+3a. In the 'Conversion' drop-down, select `External program (ANSI filename)`.
+3b. Set the 'Loading' text-box to `wscript.exe Helpers\exportlink.vbs %s %t`.
+3c. Make sure 'Disable editing' is unchecked.
+3d. Set the 'Saving' text-box to `wscript.exe Helpers\exportlink.vbs --update %s %t %n`.
+3e. Make sure 'Trim trailing whitespace' is unchecked (or could show the files as different after a save, until the comparison is reloaded).
 
 The path for the Loading and Saving text-boxes can be an absolute path (such as 'C:\bin\exportlink.vbs') or a relative path. Relative paths start from the directory that BCompare.exe is located (such as 'C:\Progam Files (x86)\Beyond Compare 3').
 
