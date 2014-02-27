@@ -29,7 +29,13 @@ Some of my batch files and scripts. Jump to the bottom for details about how I h
 * [__edpath.bat__](https://github.com/kodybrown/dos/blob/master/edpath.bat) » easily edit the PATH environment variable with a few options (such as --prepend, --remove, --force, etc.).
 * [Documentation](https://github.com/kodybrown/dos/blob/master/edpath.bat.md)
 
+### Shutdown, Reboot, and Hibernate batch files.
 
+Yes, I'm lazy. Actually, in this case, I am more forgetful than lazy, because I can never remember the arguments for shutdown.exe.
+
+* [__shutdown.cmd__](https://github.com/kodybrown/dos/blob/master/shutdown.cmd) » a simple utility to shutdown your computer. Please note, that shutdown.cmd will not be run unless '.cmd' shows up before '.exe' in your `PATHEXT` environment variable.
+* [__reboot.cmd__](https://github.com/kodybrown/dos/blob/master/reboot.cmd) » a simple utility to reboot/restart your computer.
+* [__hibernate.cmd__](https://github.com/kodybrown/dos/blob/master/hibernate.cmd) » a simple utility to hibernate your computer.
 
 
 <p>&nbsp;</p>
