@@ -1,0 +1,1 @@
+@start "" nircmd elevate "cleanmgr.exe" /d c: /sageset:100

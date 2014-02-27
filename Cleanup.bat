@@ -1,0 +1,1 @@
+@start "" nircmd elevate "cleanmgr.exe" /sagerun:100
