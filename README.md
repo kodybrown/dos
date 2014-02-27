@@ -52,6 +52,7 @@ I hate iTunes.
 The following batch files do a decent job of emulating linux commands in dos.
 For instance, common '--' arguments are supported and will convert forward slashes to back-slashes.
 
+* [__cp.bat__](https://github.com/kodybrown/dos/blob/master/cp.bat) » copies files based on specified arguments.
 * [__ls.bat__](https://github.com/kodybrown/dos/blob/master/ls.bat) » lists files based on specified arguments.
 * [__mv.bat__](https://github.com/kodybrown/dos/blob/master/mv.bat) » moves a file or files.
 * [__pwd.bat__](https://github.com/kodybrown/dos/blob/master/pwd.bat) » prints the working directory ('cd').
