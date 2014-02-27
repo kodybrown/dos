@@ -95,7 +95,7 @@ Set fso = Nothing
 Sub ModifyLinks( foldername )
     Dim file
     Dim folder
-    Dim TargetPath, WorkingDirectory, IconLocation, Description
+    Dim TargetPath, Arguments, WorkingDirectory, IconLocation, Description
     Dim link
     Dim linkChanged
 
@@ -112,6 +112,17 @@ Sub ModifyLinks( foldername )
                         linkChanged = True
                         TargetPath = Replace(TargetPath, ChangeFrom(i), ChangeTo(i), 1, -1, vbTextCompare)
                         link.TargetPath = TargetPath
+                    End If
+                Next
+            End If
+
+            Arguments = link.Arguments
+            If Arguments <> "" Then
+                For i = 0 To UBound(ChangeFrom)
+                    If InStr(1, Arguments, ChangeFrom(i), vbTextCompare) > 0 Then
+                        linkChanged = True
+                        Arguments = Replace(Arguments, ChangeFrom(i), ChangeTo(i), 1, -1, vbTextCompare)
+                        link.Arguments = Arguments
                     End If
                 Next
             End If
