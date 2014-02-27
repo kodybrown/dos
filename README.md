@@ -16,8 +16,13 @@ Some of my batch files and scripts. Jump to the bottom for details about how I h
 
 ### Editing multiple shortcut (.lnk) files
 
-* [__editlinks.vbs__](https://github.com/kodybrown/dos/blob/master/editlinks.vbs) » modifies specified shortcut (.lnk) file's paths, including the target, directory, icon, and description (if applicable).
-* [Documentation](https://github.com/kodybrown/dos/blob/master/editlinks.vbs.md)
+* [__updatelinks.vbs__](https://github.com/kodybrown/dos/blob/master/updatelinks.vbs) » modifies multiple shortcut (.lnk) files' properties, including the target, arguments, directory, icon, and description.
+* [Documentation](https://github.com/kodybrown/dos/blob/master/updatelinks.vbs.md)
+
+### Export and import a shortcut (.lnk) to and from a text file (particularly useful as a Beyond Compare File Format)
+
+* [__exportlink.vbs__](https://github.com/kodybrown/dos/blob/master/exportlink.vbs) » exports/imports the properties of the specified link (shortcut) including the target, arguments, directory, icon, description, hotkey, and windowstyle.
+* [Documentation](https://github.com/kodybrown/dos/blob/master/exportlink.vbs.md)
 
 ### Easily edit the PATH environment variable
 
