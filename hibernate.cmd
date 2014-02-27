@@ -1,1 +1,1 @@
-@shutdown /h /t 0 
+@shutdown.exe /h /f
