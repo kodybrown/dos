@@ -3,6 +3,74 @@ dos utilities
 
 Some of my batch files and scripts. Jump to the bottom for details about how I have set up my DOS environment as well as listing a few executable/utilities that are frequently used in my batch files.
 
+### Setting up the DOS environment
+
+* [__start_dos.bat__](https://github.com/kodybrown/dos/blob/master/start_dos.bat) » sets up my DOS environment. calls `alias.bat --load` and `history.bat --load` to get things started.
+* [__exit_dos.bat__](https://github.com/kodybrown/dos/blob/master/exit_dos.bat) » shuts down my DOS environment. calls `alias.bat --save` and `history.bat --save` to get closed down.
+* [Documentation](https://github.com/kodybrown/dos/blob/master/start_dos.bat.md)
+
+### Using aliases (DOSKEY macros)
+
+* [__alias.bat__](https://github.com/kodybrown/dos/blob/master/alias.bat) » allows using 'alias' like on Linux (all via DOSKEY). requires start_dos.bat and exit_dos.bat.
+* [Documentation](https://github.com/kodybrown/dos/blob/master/alias.bat.md)
+
+### Saving and retrieving command-line history
+
+* [__history.bat__](https://github.com/kodybrown/dos/blob/master/history.bat) » allows using 'history' like on Linux. requires start_dos.bat and exit_dos.bat.
+* [Documentation](https://github.com/kodybrown/dos/blob/master/history.bat.md)
+
+### Basic utilities and wrappers
+
+DIR command wrappers
+
+* [__dc.bat__](https://github.com/kodybrown/dos/blob/master/dc.bat) » kists files where name contains the value specified.
+* [__dd.bat__](https://github.com/kodybrown/dos/blob/master/dd.bat) » lists (only) directories where name contains the value specified.
+* [__de.bat__](https://github.com/kodybrown/dos/blob/master/de.bat) » lists files where name (not including extension) ends with the value specified.
+* [__ds.bat__](https://github.com/kodybrown/dos/blob/master/ds.bat) » lists files where name starts with the value specified.
+* [__dx.bat__](https://github.com/kodybrown/dos/blob/master/dx.bat) » lists files where extension contains the value specified.
+
+A few other little utilities
+
+* [__''.bat__](https://github.com/kodybrown/dos/blob/master/''.bat) » changes to the root of the current drive (ie: 'cd\').
+* [__'.bat__](https://github.com/kodybrown/dos/blob/master/'.bat) » changes to the current directories parent (ie: 'cd..'). did i mention that i'm lazy, yet?
+* [__cdor.bat__](https://github.com/kodybrown/dos/blob/master/cdor.bat) » changes to first argument (a directory) that exists.
+* [__count.bat__](https://github.com/kodybrown/dos/blob/master/count.bat) » counts the number of lines in the specified file and returns the count as the errorlevel.
+* [__edit.bat__](https://github.com/kodybrown/dos/blob/master/edit.bat) » redirects to n.bat.
+* [__n.bat__](https://github.com/kodybrown/dos/blob/master/n.bat) » opens notepad2. will convert forward slashes to back-slashes, 'hosts' shortcut (including sudo if available), etc.
+* [__np.bat__](https://github.com/kodybrown/dos/blob/master/np.bat) » same as n.bat only for notepad++.
+* [__nu.bat__](https://github.com/kodybrown/dos/blob/master/nu.bat) » simple wrapper for `net use`. yes. i am a lazy typer.. err.. typist.
+* [__subl.bat__](https://github.com/kodybrown/dos/blob/master/subl.bat) » same as n.bat only for Sublime Text 3.
+* [__sublime.bat__](https://github.com/kodybrown/dos/blob/master/sublime.bat) » redirects to subl.bat.
+
+I hate iTunes.
+
+* [__itunes-start.bat__](https://github.com/kodybrown/dos/blob/master/itunes-start.bat) » starts itunes' services and helper, then starts itunes itself.
+* [__itunes-stop.bat__](https://github.com/kodybrown/dos/blob/master/itunes-stop.bat) » stops all of itunes services and helper.
+
+### Linux on DOS wrappers
+
+The following batch files do a decent job of emulating linux commands in dos.
+For instance, common '--' arguments are supported and will convert forward slashes to back-slashes.
+
+* [__ls.bat__](https://github.com/kodybrown/dos/blob/master/ls.bat) » lists files based on specified arguments.
+* [__mv.bat__](https://github.com/kodybrown/dos/blob/master/mv.bat) » moves a file or files.
+* [__pwd.bat__](https://github.com/kodybrown/dos/blob/master/pwd.bat) » prints the working directory ('cd').
+* [__rm.bat__](https://github.com/kodybrown/dos/blob/master/rm.bat) » deletes a file or files.
+
+Also, check out the sections above on aliases and history.
+
+### Git wrappers
+
+I have all but replaced these batch files with aliases (doskey macros). See 'Aliases (DOSKEY macros)' above for more details.
+
+* [__git.bat__](https://github.com/kodybrown/dos/blob/master/git.bat) » provides a wrapper to find and execute git.exe. also supports a 'purge' option.
+* [__ga.bat__](https://github.com/kodybrown/dos/blob/master/ga.bat) » adds files (ie: 'git.bat add [.|%*]').if no argument is specified, it appends a dot ('.') for adding 'all'.
+* [__gh.bat__](https://github.com/kodybrown/dos/blob/master/gh.bat) » shows the history (ie: 'git.bat log --oneline --graph --date=short --all --max-count=20 %*').
+* [__gi.bat__](https://github.com/kodybrown/dos/blob/master/gi.bat) » commits changes (ie: 'git.bat commit %*').
+* [__gitpatch.bat__](https://github.com/kodybrown/dos/blob/master/gitpatch.bat) » saves a patch of changes to the desktop. can specify '--cached' or not. includes date/time in the filename.
+* [__gs.bat__](https://github.com/kodybrown/dos/blob/master/gs.bat) » shows the status (ie: 'git.bat status %*').
+
+
 ### Create thumbnail images from .pdf files
 
 * [__pdf2jpg.bat__](https://github.com/kodybrown/dos/blob/master/pdf2jpg.bat) » creates a thumbnail of one or more pages within one or more .pdf files. This batch file is just an easy to use wrapper for the GhostScript command-line utility `gswin64c.exe`.
