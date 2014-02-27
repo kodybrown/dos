@@ -1,5 +1,5 @@
 
-# Export and import a shortcut (.lnk) to and from a text file (particularly useful as a Beyond Compare File Format)
+# Export and import a shortcut (.lnk) to and from a text file
 
 * [__exportlink.vbs__](https://github.com/kodybrown/dos/blob/master/exportlink.vbs) » exports/imports the properties of the specified link (shortcut) including the target, arguments, directory, icon, description, hotkey, and windowstyle.
 
@@ -42,6 +42,8 @@ This sets the properties in 'Beyond Compare 3.lnk' from the values in the 'Beyon
 ```
 
 ## Creating a Beyond Compare File Format
+
+This little utility is particularly useful as a Beyond Compare File Format.
 
 1. Create a new File Format named `Shortcuts`.
 2. On the 'General' tab,
