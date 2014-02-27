@@ -50,8 +50,8 @@ This sets the properties in 'Beyond Compare 3.lnk' from the values in the 'Beyon
     1. In the 'Conversion' drop-down, select `External program (ANSI filename)`.
     2. Set the 'Loading' text-box to `wscript.exe Helpers\exportlink.vbs %s %t`.
     3. Make sure 'Disable editing' is unchecked.
-    4. Set the 'Saving' text-box to `wscript.exe Helpers\exportlink.vbs --update %s %t %n`.
-    5. Make sure 'Trim trailing whitespace' is unchecked (or could show the files as different after a save, until the comparison is reloaded).
+    4. Set the 'Saving' text-box to `wscript.exe Helpers\exportlink.vbs --update %s %t`.
+    5. Make sure 'Trim trailing whitespace' is unchecked. (Or else, after a save bc may show the files as different, depending on the changes made. Reload/refresh the comparison to fix.)
 
 The path for the Loading and Saving text-boxes can be an absolute path (such as 'C:\bin\exportlink.vbs') or a relative path. Relative paths start from the directory that BCompare.exe is located (such as 'C:\Progam Files (x86)\Beyond Compare 3').
 
