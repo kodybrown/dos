@@ -4,7 +4,7 @@
 rem Opens Notepad2 using the specified argument(s) if provided.
 rem Also replaces all '/' characters with '\'.
 rem If `hosts` is the first argument, opens the machine's hosts file.
-rem Created 2007 @wasatchwizard
+rem Created 2007-2013 @wasatchwizard
 
 :init
     set __file=
@@ -26,6 +26,9 @@ rem Created 2007 @wasatchwizard
     shift
 
 :main
+	:: replace forward-slashes with back-slashes
+    set __file=%__file:/=\%
+
     if exist "%bin%\Notepad2.exe" start "notepad" /b "%bin%\Notepad2.exe" "%__file%"
     if not exist "%bin%\Notepad2.exe" start "notepad" /b "Notepad.exe" "%__file%"
 
