@@ -19,7 +19,9 @@ Some of my batch files and scripts. Jump to the bottom for details about how I h
 * [__updatelinks.vbs__](https://github.com/kodybrown/dos/blob/master/updatelinks.vbs) » modifies multiple shortcut (.lnk) files' properties, including the target, arguments, directory, icon, and description.
 * [Documentation](https://github.com/kodybrown/dos/blob/master/updatelinks.vbs.md)
 
-### Export and import a shortcut (.lnk) to and from a text file (particularly useful as a Beyond Compare File Format)
+### Export and import a shortcut (.lnk) to and from a text file
+
+This little utility is particularly useful as a Beyond Compare File Format.
 
 * [__exportlink.vbs__](https://github.com/kodybrown/dos/blob/master/exportlink.vbs) » exports/imports the properties of the specified link (shortcut) including the target, arguments, directory, icon, description, hotkey, and windowstyle.
 * [Documentation](https://github.com/kodybrown/dos/blob/master/exportlink.vbs.md)
