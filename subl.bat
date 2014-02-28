@@ -14,9 +14,9 @@ rem Created 2012-2013 @wasatchwizard
 
     if /i "%~1"=="hosts" (
         echo opening hosts file..
-        if exist "%bin%\nircmd.exe" (
-            if exist "%bin%\apps\Sublime Text\sublime_text.exe" start "nircmd hosts" "%bin%\nircmd.exe" elevate "%bin%\apps\Sublime Text\sublime_text.exe" --new-window "c:\Windows\System32\drivers\etc\hosts"
-            if not exist "%bin%\apps\Sublime Text\sublime_text.exe" start "nircmd hosts" "%bin%\nircmd.exe" elevate "Notepad.exe" "c:\Windows\System32\drivers\etc\hosts"
+        if exist "%bin%\elevate.cmd" (
+            if exist "%bin%\apps\Sublime Text\sublime_text.exe" start "nircmd hosts" "%bin%\elevate.cmd" "%bin%\apps\Sublime Text\sublime_text.exe" --new-window "c:\Windows\System32\drivers\etc\hosts"
+            if not exist "%bin%\apps\Sublime Text\sublime_text.exe" start "nircmd hosts" "%bin%\elevate.cmd" "Notepad.exe" "c:\Windows\System32\drivers\etc\hosts"
             endlocal && exit /B 0
         )
         set "__file=c:\Windows\System32\drivers\etc\hosts" && shift && goto :main

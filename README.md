@@ -19,6 +19,12 @@ Some of my batch files and scripts. Jump to the bottom for details about how I h
 * [__history.bat__](https://github.com/kodybrown/dos/blob/master/history.bat) » allows using 'history' like on Linux. requires start_dos.bat and exit_dos.bat.
 * [Documentation](https://github.com/kodybrown/dos/blob/master/history.bat.md)
 
+### Running applications with elevated permissions (as administrator)
+
+* [__elevate.cmd__](https://github.com/kodybrown/dos/blob/master/elevate.cmd) » open the specified application with elevated permissions (run as administrator).
+* [__elevate.vbs__](https://github.com/kodybrown/dos/blob/master/elevate.vbs) » this is NOT called directly. elevate.cmd calls this.
+* [Documentation](https://github.com/kodybrown/dos/blob/master/elevate.md)
+
 ### Basic utilities and wrappers
 
 DIR command wrappers
@@ -36,6 +42,7 @@ A few other little utilities
 * [__cdor.bat__](https://github.com/kodybrown/dos/blob/master/cdor.bat) » changes to first argument (a directory) that exists.
 * [__count.bat__](https://github.com/kodybrown/dos/blob/master/count.bat) » counts the number of lines in the specified file and returns the count as the errorlevel.
 * [__edit.bat__](https://github.com/kodybrown/dos/blob/master/edit.bat) » redirects to n.bat.
+* [__emptybin.bat__](https://github.com/kodybrown/dos/blob/master/emptybin.bat) » empties the recycle bin. requires 'recycle.exe' or 'nircmd.exe'.
 * [__n.bat__](https://github.com/kodybrown/dos/blob/master/n.bat) » opens notepad2. will convert forward slashes to back-slashes, 'hosts' shortcut (including sudo if available), etc.
 * [__np.bat__](https://github.com/kodybrown/dos/blob/master/np.bat) » same as n.bat only for notepad++.
 * [__nu.bat__](https://github.com/kodybrown/dos/blob/master/nu.bat) » simple wrapper for `net use`. yes. i am a lazy typer.. err.. typist.
@@ -70,7 +77,6 @@ I have all but replaced these batch files with aliases (doskey macros). See 'Ali
 * [__gi.bat__](https://github.com/kodybrown/dos/blob/master/gi.bat) » commits changes (ie: 'git.bat commit %*').
 * [__gitpatch.bat__](https://github.com/kodybrown/dos/blob/master/gitpatch.bat) » saves a patch of changes to the desktop. can specify '--cached' or not. includes date/time in the filename.
 * [__gs.bat__](https://github.com/kodybrown/dos/blob/master/gs.bat) » shows the status (ie: 'git.bat status %*').
-
 
 ### Create thumbnail images from .pdf files
 

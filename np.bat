@@ -14,9 +14,9 @@ rem Created 2007 @wasatchwizard
 
     if /i "%~1"=="hosts" (
         echo opening hosts file..
-        if exist "%bin%\nircmd.exe" (
-            if exist "%bin%\apps\Notepad++\notepad++.exe" start "nircmd hosts" "%bin%\nircmd.exe" elevate "%bin%\apps\Notepad++\notepad++.exe" "c:\Windows\System32\drivers\etc\hosts"
-            if not exist "%bin%\apps\Notepad++\notepad++.exe" start "nircmd hosts" "%bin%\nircmd.exe" elevate "Notepad.exe" "c:\Windows\System32\drivers\etc\hosts"
+        if exist "%bin%\elevate.cmd" (
+            if exist "%bin%\apps\Notepad++\notepad++.exe" start "nircmd hosts" "%bin%\elevate.cmd" "%bin%\apps\Notepad++\notepad++.exe" "c:\Windows\System32\drivers\etc\hosts"
+            if not exist "%bin%\apps\Notepad++\notepad++.exe" start "nircmd hosts" "%bin%\elevate.cmd" "Notepad.exe" "c:\Windows\System32\drivers\etc\hosts"
             endlocal && exit /B 0
         )
         set "__file=c:\Windows\System32\drivers\etc\hosts" && shift && goto :main

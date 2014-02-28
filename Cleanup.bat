@@ -1,1 +1,1 @@
-@start "" nircmd elevate "cleanmgr.exe" /sagerun:100
+@start "cleanmgr" "%bin%\elevate.cmd" "cleanmgr.exe" /sagerun:100

@@ -1,1 +1,1 @@
-@start "" nircmd elevate "cleanmgr.exe" /d c: /sageset:100
+@start "cleanmgr-setup" "%bin%\elevate.cmd" "cleanmgr.exe" /d c: /sageset:100
