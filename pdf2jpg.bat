@@ -8,7 +8,7 @@ goto :init
 ::   gswin64c.exe (GhostScript)
 ::+++++++++++++++++++
 
-:usage ()
+:usage
     echo pdf2jpg.bat ^| Created 2014 @wasatchwizard.
     echo             ^| Released under the MIT License.
     echo.
@@ -56,7 +56,7 @@ goto :init
     echo                   set `firstp` then `lastp` in your arguments.
     goto :eof
 
-:init ()
+:init
     :: NOTE: envars that are prefixed with __ mean those values
     ::       can be set via a command-line argument.
 
@@ -117,75 +117,65 @@ goto :init
     :: `filext` is the output file name's extension.
     set filext=jpg
 
-:parse ()
+    :: create an icon of the image, also
+    set __ico=
+    :: create a shortcut to the pdf file
+    :: will use ico if created..
+    set __shortcut=
+
+:parse
     if "%~1"=="" goto :main
 
-    if /i "%~1"=="/?" call :usage && endlocal && exit /B 0
-    if /i "%~1"=="--help" call :usage && endlocal && exit /B 0
-    if /i "%~1"=="-help" call :usage && endlocal && exit /B 0
-    if /i "%~1"=="-h" call :usage && endlocal && exit /B 0
+    set a=%~1
+    set a=%a:--=-%
+    set a2=%a:~0,2%
 
-    if /i "%~1"=="--quiet" set "__quiet=true" && shift && goto :parse
-    if /i "%~1"=="-quiet" set "__quiet=true" && shift && goto :parse
-    if /i "%~1"=="-q" set "__quiet=true" && shift && goto :parse
-    if /i "%~1"=="/q" set "__quiet=true" && shift && goto :parse
+    if /i "%a%"=="/?" call :usage && endlocal && exit /B 0
+    if /i "%a2%"=="-h" call :usage && endlocal && exit /B 0
 
-    if /i "%~1"=="--verbose" set "__verbose=true" && shift && goto :parse
-    if /i "%~1"=="-verbose" set "__verbose=true" && shift && goto :parse
-    if /i "%~1"=="-v" set "__verbose=true" && shift && goto :parse
-    if /i "%~1"=="/v" set "__verbose=true" && shift && goto :parse
+    if /i "%a2%"=="-q" set "__quiet=true" && shift && goto :parse
+    if /i "%a2%"=="/q" set "__quiet=true" && shift && goto :parse
 
-    if /i "%~1"=="--pause" set "__pause=true" && shift && goto :parse
-    if /i "%~1"=="-pause" set "__pause=true" && shift && goto :parse
-    if /i "%~1"=="-p" set "__pause=true" && shift && goto :parse
-    if /i "%~1"=="/p" set "__pause=true" && shift && goto :parse
+    if /i "%a2%"=="-v" set "__verbose=true" && shift && goto :parse
+    if /i "%a2%"=="/v" set "__verbose=true" && shift && goto :parse
 
-    if /i "%~1"=="/s" set "__subdirs=/s" && shift && goto :parse
-    if /i "%~1"=="-s" set "__subdirs=/s" && shift && goto :parse
-    if /i "%~1"=="--s" set "__subdirs=/s" && shift && goto :parse
-    if /i "%~1"=="/r" set "__subdirs=/s" && shift && goto :parse
-    if /i "%~1"=="-r" set "__subdirs=/s" && shift && goto :parse
-    if /i "%~1"=="--r" set "__subdirs=/s" && shift && goto :parse
+    if /i "%a2%"=="-p" set "__pause=true" && shift && goto :parse
+    if /i "%a2%"=="/p" set "__pause=true" && shift && goto :parse
 
-    if /i "%~1"=="--max" set /a "__max=%~2" && shift && shift && goto :parse
-    if /i "%~1"=="-max" set /a "__max=%~2" && shift && shift && goto :parse
+    if /i "%a2%"=="/s" set "__subdirs=/s" && shift && goto :parse
+    if /i "%a2%"=="-s" set "__subdirs=/s" && shift && goto :parse
+    if /i "%a2%"=="/r" set "__subdirs=/s" && shift && goto :parse
+    if /i "%a2%"=="-r" set "__subdirs=/s" && shift && goto :parse
 
-    if /i "%~1"=="--overwrite" set "__overwrite=%~2" && shift && shift && goto :parse
-    if /i "%~1"=="-overwrite" set "__overwrite=%~2" && shift && shift && goto :parse
-    if /i "%~1"=="--overwrite:yes" set "__overwrite=yes" && shift && goto :parse
-    if /i "%~1"=="--overwrite:no" set "__overwrite=no" && shift && goto :parse
-    if /i "%~1"=="--overwrite:ask" set "__overwrite=ask" && shift && goto :parse
-    if /i "%~1"=="--overwrite=yes" set "__overwrite=yes" && shift && goto :parse
-    if /i "%~1"=="--overwrite=no" set "__overwrite=no" && shift && goto :parse
-    if /i "%~1"=="--overwrite=ask" set "__overwrite=ask" && shift && goto :parse
+    if /i "%a2%"=="-m" set /a "__max=%~2" && shift && shift && goto :parse
+    :: if /i "%a%"=="/max" set /a "__max=%~2" && shift && shift && goto :parse
+
+    if /i "%a2%"=="-o" set "__overwrite=%~2" && shift && shift && goto :parse
+    :: if /i "%a%"=="/overwrite" set "__overwrite=%~2" && shift && shift && goto :parse
 
     rem gswin64c parameters.
-    if /i "%~1"=="--firstp" set /a "firstp=%~2" && set /a "lastp=%~2" && shift && shift && goto :parse
-    if /i "%~1"=="-firstp" set /a "firstp=%~2" && set /a "lastp=%~2" && shift && shift && goto :parse
+    if /i "%a%"=="-firstp" set /a "firstp=%~2" && set /a "lastp=%~2" && shift && shift && goto :parse
+    if /i "%a%"=="-lastp" set /a "lastp=%~2" && shift && shift && goto :parse
+    if /i "%a%"=="-size" set "size=%~2" && shift && shift && goto :parse
+    if /i "%a%"=="-res" set /a "res=%~2" && shift && shift && goto :parse
+    if /i "%a%"=="-device" set "device=%~2" && shift && shift && goto :parse
+    if /i "%a%"=="-filext" set "filext=%~2" && shift && shift && goto :parse
 
-    if /i "%~1"=="--lastp" set /a "lastp=%~2" && shift && shift && goto :parse
-    if /i "%~1"=="-lastp" set /a "lastp=%~2" && shift && shift && goto :parse
+    if /i "%a%"=="-folderjpg" set "__folderjpg=true" && shift && goto :parse
 
-    if /i "%~1"=="--size" set "size=%~2" && shift && shift && goto :parse
-    if /i "%~1"=="-size" set "size=%~2" && shift && shift && goto :parse
+    if /i "%a%"=="-ico" set "__ico=true" && shift && goto :parse
+    if /i "%a%"=="-icon" set "__ico=true" && shift && goto :parse
 
-    if /i "%~1"=="--res" set /a "res=%~2" && shift && shift && goto :parse
-    if /i "%~1"=="-res" set /a "res=%~2" && shift && shift && goto :parse
+    if /i "%a%"=="-lnk" set "__shortcut=true" && shift && goto :parse
+    if /i "%a%"=="-link" set "__shortcut=true" && shift && goto :parse
 
-    if /i "%~1"=="--device" set "device=%~2" && shift && shift && goto :parse
-    if /i "%~1"=="-device" set "device=%~2" && shift && shift && goto :parse
-
-    if /i "%~1"=="--filext" set "filext=%~2" && shift && shift && goto :parse
-    if /i "%~1"=="-filext" set "filext=%~2" && shift && shift && goto :parse
-
-    if /i "%~1"=="--folderjpg" set "__folderjpg=true" && shift && goto :parse
-    if /i "%~1"=="-folderjpg" set "__folderjpg=true" && shift && goto :parse
-
-:main ()
+:main
     :: Validate `__overwrite`.
-    if not "%__overwrite%"=="yes" (
-        if not "%__overwrite%"=="no" (
-            if not "%__overwrite%"=="ask" (
+    if /i "%__overwrite%"=="all" set __overwrite=yes
+    if /i "%__overwrite%"=="none" set __overwrite=no
+    if /i not "%__overwrite%"=="yes" (
+        if /i not "%__overwrite%"=="no" (
+            if /i not "%__overwrite%"=="ask" (
                 set __overwrite=ask
             )
         )
@@ -203,18 +193,18 @@ goto :init
         endlocal && exit /B 0
         goto :eof
 
-:incrementcount ()
+:incrementcount
     set /a count+=1
     goto :eof
 
-:multiplefiles ()
-    for /f "tokens=*" %%g in ('"dir %__subdirs% /b *.pdf"') do (
+:multiplefiles
+    for /f "tokens=*" %%G in ('"dir %__subdirs% /b *.pdf"') do (
         if !count! GEQ %__max% goto :eof
-        call :singlefile "%%~g"
+        call :singlefile "%%~dpnxG"
     )
     goto :eof
 
-:singlefile ()
+:singlefile
     call :incrementcount
 
     set "hideoutput=>NUL"
@@ -254,7 +244,7 @@ goto :init
         goto :eof
 
     :singlefile_go_okay
-        :: Use the .
+        :: Output the image to 'folder.jpq'.
         if defined __folderjpg set outfile=folder.jpg
         if not defined __folderjpg set outfile=%~dpn1.%filext%
 
@@ -262,13 +252,40 @@ goto :init
         call "%gswin64c%" -dNOPAUSE -dBATCH -r%res% -sDEVICE=%device% -sOutputFile="%outfile%" -dFirstPage=%firstp% -dLastPage=%lastp% "%~1" %hideoutput%
         if %errorlevel% NEQ 0 echo **** ERROR: Could not convert file.
 
+        :: Create an icon file of the image, also.
+        if not defined __ico goto :skipicon
+            if defined __verbose echo == Creating .ico file.
+            if exist "%~dpn1.ico" del /Q /F "%~dpn1.ico"
+            call convert "%outfile%" -colors 256 -background transparent -border 0 -resize 128x128 "%~dpn1.ico"
+        :skipicon
+
+        :: Create a shortcut (.lnk) to the original pdf file.
+        if not defined __shortcut goto :skipshortcut
+            if defined __verbose echo == Creating .lnk file.
+            set lnkfile=%~dpn1.lnk
+            set lnktext=%~dpn1.lnktext
+
+            if exist "%lnkfile%" del /Q /F "%lnkfile%"
+
+            echo TargetPath=%~dpnx1> "%lnktext%"
+            echo Arguments=>> "%lnktext%"
+            echo WorkingDirectory=%~dp1>> "%lnktext%"
+            if exist "%~dpn1.ico" echo IconLocation=%~dpn1.ico>> "%lnktext%"
+            echo Description=>> "%lnktext%"
+            echo Hotkey=>> "%lnktext%"
+            echo WindowStyle=>> "%lnktext%"
+
+            call wscript.exe "%bin%\exportlink.vbs" --update "%lnktext%" "%lnkfile%"
+
+            if exist "%lnktext%" del /Q "%lnktext%"
+        :skipshortcut
+
         :: Create the desktop.ini file.
         if not defined __folderjpg goto :skipdesktopini
-        if not exist desktop.ini goto :writedesktopini
-        goto :skipdesktopini
-        :writedesktopini
-            echo [.ShellClassInfo]>desktop.ini
-            echo IconFile=folder.jpg>>desktop.ini
+        if exist desktop.ini goto :skipdesktopini
+            if defined __verbose echo == Creating desktop.ini file.
+            echo [.ShellClassInfo]> "%~dp1desktop.ini"
+            echo IconFile=folder.jpg>> "%~dp1desktop.ini"
             attrib +a +h +s desktop.ini
         :skipdesktopini
 
