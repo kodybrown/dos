@@ -95,7 +95,7 @@ Set fso = Nothing
 Sub ModifyLinks( foldername )
     Dim file
     Dim folder
-    Dim TargetPath, Arguments, WorkingDirectory, IconLocation, Description
+    Dim TargetPath, Arguments, WorkingDirectory, IconLocation, Description, Description2
     Dim link
     Dim linkChanged
 
@@ -154,22 +154,26 @@ Sub ModifyLinks( foldername )
             On Error Goto 0
             If Err.Number = 0 Then
                 If Description <> "" Then
+                    'MsgBox Description
                     For i = 0 To UBound(ChangeFrom)
                         If InStr(1, Description, ChangeFrom(i), vbTextCompare) > 0 Then
                             linkChanged = True
                             Description = Replace(Description, CStr(ChangeFrom(i)), CStr(ChangeTo(i)), 1, -1, vbTextCompare)
-                            link.Description = Description
                         End If
                     Next
+                    link.Description = Description
                 End If
 
                 If InStr(Description, "%") > 0 Then
-                    Description = wso.ExpandEnvironmentStrings(Description)
-                    If StrComp(Description, link.TargetPath, vbTextCompare) = 0 Then
-                        ' WScript.Echo link.Description & "-" & link.TargetPath
-                        linkChanged = True
-                        link.Description = ""
-                    End If
+                    Description2 = wso.ExpandEnvironmentStrings(Description)
+                Else
+                    Description2 = ""
+                End If
+
+                If StrComp(Description, link.TargetPath, vbTextCompare) = 0 Or StrComp(Description2, link.TargetPath, vbTextCompare) = 0 Then
+                    ' WScript.Echo link.Description & "-" & link.TargetPath
+                    linkChanged = True
+                    link.Description = ""
                 End If
             End If
 
