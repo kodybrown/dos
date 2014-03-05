@@ -79,6 +79,12 @@ goto :init
     :: expected to fail gracefully with an error code.
     set __quiet=
 
+    :: `__pause` indicates to pause at the end.
+    set __pause=
+
+    :: `__subdirs` indicates to process sub-directories also.
+    set __subdirs=
+
     :: `overwrite` flag indicates the behavior to use when the
     :: output file already exists.
     ::
@@ -94,13 +100,8 @@ goto :init
     :: directory's image.
     set __folderjpg=
 
-    :: `__pause` indicates to pause at the end.
-    set __pause=
-    :: `__subdirs` indicates to process sub-directories also.
-    set __subdirs=
-
     :: `__max` is the maximum number of files to process.
-    set /a __max=100
+    set /a __max=10000
     :: `count` is the number of files that were processed.
     set /a count=0
 
@@ -248,15 +249,19 @@ goto :init
         if defined __folderjpg set outfile=folder.jpg
         if not defined __folderjpg set outfile=%~dpn1.%filext%
 
+        if exist "%outfile%" goto :skipimage
         :: -g%size%
         call "%gswin64c%" -dNOPAUSE -dBATCH -r%res% -sDEVICE=%device% -sOutputFile="%outfile%" -dFirstPage=%firstp% -dLastPage=%lastp% "%~1" %hideoutput%
         if %errorlevel% NEQ 0 echo **** ERROR: Could not convert file.
+        :skipimage
 
-        :: Create an icon file of the image, also.
+        :: Create an icon file of the image.
         if not defined __ico goto :skipicon
+            if not exist "%outfile%" goto :skipicon
+            if exist "%~dpn1.ico" goto :skipicon
             if defined __verbose echo == Creating .ico file.
-            if exist "%~dpn1.ico" del /Q /F "%~dpn1.ico"
-            call convert "%outfile%" -colors 256 -background transparent -border 0 -resize 128x128 "%~dpn1.ico"
+            ::if exist "%~dpn1.ico" del /Q /F "%~dpn1.ico"
+            call convert "%outfile%" -colors 256 -background transparent -border 0 -resize 256x256 "%~dpn1.ico"
         :skipicon
 
         :: Create a shortcut (.lnk) to the original pdf file.
