@@ -1,1 +1,1 @@
-@"%~dp0git.bat" log --oneline --graph --date=short --all --max-count=20 %*
+@"%bin%git.bat" log --oneline --graph --date=short --all --max-count=20 %*
