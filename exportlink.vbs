@@ -25,13 +25,11 @@ Const WindowNormal = 1, WindowMinimized = 2, WindowMaximized = 3
 ' Options
 Dim OptVerbose : OptVerbose = False
 Dim OptUpdateLink : OptUpdateLink = False
+Dim OptOverwriteLink : OptOverwriteLink = False
 
 ' Settings
 Dim File1 : File1 = ""
 Dim File2 : File2 = ""
-' The origShortcutFile/File3 file was really just here to better support Beyond Compare,
-' but it is currently no longer used.
-Dim File3 : File3 = ""
 
 ' Get the command-line parameters..
 If args.Count > 0 Then
@@ -47,6 +45,8 @@ If args.Count > 0 Then
                 OptVerbose = True
             ElseIf StrComp(a, "import", vbTextCompare) = 0 Or StrComp(a, "update", vbTextCompare) = 0 Then
                 OptUpdateLink = True
+            ElseIf StrComp(a, "overwrite", vbTextCompare) = 0 Or StrComp(a, "replace", vbTextCompare) = 0 Then
+                OptOverwriteLink = True
             ElseIf StrComp(a, "export", vbTextCompare) = 0 Then
                 OptUpdateLink = False
             Else
@@ -57,10 +57,6 @@ If args.Count > 0 Then
                 File1 = a
             ElseIf Len(File2) = 0 Then
                 File2 = a
-            ElseIf Len(File3) = 0 Then
-                ' The origShortcutFile/File3 file was really just here to better support Beyond Compare,
-                ' but it is currently no longer used.
-                File3 = a
             Else
                 WScript.Echo "Unknown argument: " & args(i)
             End If
@@ -68,21 +64,16 @@ If args.Count > 0 Then
     Next
 End If
 
-If OptUpdateLink Then
+If OptUpdateLink Or OptOverwriteLink Then
     If Len(File1) = 0 Then
         WScript.Echo "Missing text-file (first argument). Must be a text file (*.txt)."
         WScript.Quit(21)
     ElseIf Len(File2) = 0 Then
         WScript.Echo "Missing shortcut-file (second argument). Must be a shortcut file (*.lnk)."
         WScript.Quit(22)
-    ElseIf Len(File3) = 0 Then
-        ' The origShortcutFile/File3 file was really just here to better support Beyond Compare,
-        ' but it is currently no longer used.
-        'WScript.Echo "Missing original-shortcut-file (third argument). Must be the original shortcut file (*.lnk)."
-        'WScript.Quit(23)
     End If
 
-    UpdateLink File1, File2, File3
+    UpdateLink File1, File2
 Else
     If Len(File1) = 0 Then
         WScript.Echo "Missing shortcut-file (first argument). Must be a shortcut file (*.lnk)."
@@ -109,35 +100,50 @@ WScript.Quit(0)
 ' Methods
 '--------------------------------------------------------------------
 
-Sub UpdateLink( textFile, shortcutFile, origShortcutFile )
+Sub UpdateLink( textFile, shortcutFile )
     Dim FileReader, link
     Dim l, Description
     Dim AR, AttrName, AttrValue
-
-    Set FileReader = fso.OpenTextFile(textFile, ForReading)
+    Dim OriginalShortcut
 
     On Error Resume Next
-    ' The origShortcutFile file was really just here to better support Beyond Compare,
-    ' but it is currently no longer used.
-    'fso.CopyFile origShortcutFile, shortcutFile
-    'fso.MoveFile shortcutFile, shortcutFile & ".lnk"
+    Set FileReader = fso.OpenTextFile(textFile, ForReading)
+    On Error Goto 0
+    If Err.Number <> 0 Then
+        WScript.Echo "Could not open text file: " & textFile & vbCrLf & vbCrLf & Err.Description
+        WScript.Quit(32)
+    End If
 
-    ' WSO requires that the shortcut file it opens/edits
+    ' WSO requires that the shortcut file it opens/edits/creates
     ' ends with '.lnk' or '.url'.
-    Set link = wso.CreateShortcut(shortcutFile & ".lnk")
+    If LCase(Right(shortcutFile, 4)) = ".lnk" Then
+        OriginalShortcut = shortcutFile
+    Else
+        OriginalShortcut = shortcutFile & ".lnk"
+    End If
+
+    If OptOverwriteLink Then
+        ' We are overwriting whatever might already be in the shortcut file..
+        If fso.FileExists(OriginalShortcut) Then
+            fso.DeleteFile OriginalShortcut
+        End If
+    End If
+
+    On Error Resume Next
+    Set link = wso.CreateShortcut(shortcutFile)
+    On Error Goto 0
     If Err.Number <> 0 Then
         WScript.Echo "Could not open shortcut file." & vbCrLf & vbCrLf & Err.Description
         WScript.Quit(10)
     End If
-    On Error Goto 0
 
     Do While FileReader.AtEndOfStream <> True
         l = FileReader.ReadLine
 
         If InStr(1, l, "=") > 0 Then
             AR = Split(l, "=")
-            AttrName = AR(0)
-            AttrValue = AR(1)
+            AttrName = Trim(AR(0))
+            AttrValue = Trim(AR(1))
 
             If InStr(1, AttrValue, "<changes will be ignored>") > 0 Then
                 ' This indicates an error occurred while
@@ -146,6 +152,7 @@ Sub UpdateLink( textFile, shortcutFile, origShortcutFile )
             End If
 
             If AttrName = "TargetPath" Then
+' WScript.Echo AttrValue
                 link.TargetPath = AttrValue
             ElseIf AttrName = "Arguments" Then
                 link.Arguments = AttrValue
@@ -158,7 +165,10 @@ Sub UpdateLink( textFile, shortcutFile, origShortcutFile )
             ElseIf AttrName = "Hotkey" Then
                 link.Hotkey = AttrValue
             ElseIf AttrName = "WindowStyle" Then
-                link.WindowStyle = AttrValue
+' WScript.Echo AttrValue
+                If Len(AttrValue) > 0 Then
+                    link.WindowStyle = AttrValue
+                End If
             End If
         End If
     Loop
@@ -173,8 +183,10 @@ Sub UpdateLink( textFile, shortcutFile, origShortcutFile )
     End If
     Set link = Nothing
 
-    fso.DeleteFile shortcutFile
-    fso.MoveFile shortcutFile & ".lnk", shortcutFile
+    If OriginalShortcut <> shortcutFile Then
+        fso.DeleteFile OriginalShortcut
+        fso.MoveFile shortcutFile, OriginalShortcut
+    End if
 End Sub
 
 Sub ExportLink( shortcutFile, textFile )
@@ -214,4 +226,6 @@ Sub ExportLink( shortcutFile, textFile )
 
     FileWriter.WriteLine ""
     FileWriter.Close
+
+    Set link = Nothing
 End Sub
