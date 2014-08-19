@@ -98,8 +98,8 @@ I have all but replaced these batch files with aliases (doskey macros). See 'Ali
 
 This little utility is particularly useful as a Beyond Compare File Format.
 
-* [__exportlink.vbs__](https://github.com/kodybrown/dos/blob/master/exportlink.vbs) » exports/imports the properties of the specified link (shortcut) including the target, arguments, directory, icon, description, hotkey, and windowstyle.
-* [Documentation](https://github.com/kodybrown/dos/blob/master/exportlink.vbs.md)
+* [__updatelinks.vbs__](https://github.com/kodybrown/dos/blob/master/updatelinks.vbs) » updates the properties of the specified links (shortcuts) including the target, arguments, directory, icon, description, hotkey, and windowstyle.
+* [Documentation](https://github.com/kodybrown/dos/blob/master/updatelinks.vbs.md)
 
 ### Easily edit the PATH environment variable
 
