@@ -1,1 +1,1 @@
-@start "cleanmgr-setup" "%bin%\elevate.cmd" "cleanmgr.exe" /d c: /sageset:100
+@start "cleanmgr-setup" "%bin%\elevate.cmd" "%SystemRoot%\System32\cleanmgr.exe" /d c: /sageset:100
