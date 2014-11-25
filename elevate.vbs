@@ -56,6 +56,6 @@ Sub DisplayUsage
         & "application." & vbCrLf _
         & vbCrLf _
         & "Sample usage with scripts:" & vbCrLf _
-        & "    elevate wscript ""C:\windows\system32\slmgr.vbs"" –dli" & vbCrLf _
+        & "    elevate wscript ""C:\windows\system32\slmgr.vbs"" -dli" & vbCrLf _
         & "    elevate powershell -NoExit -Command & 'C:\Temp\Test.ps1'" & vbCrLf
 End Sub
