@@ -577,34 +577,8 @@ rem ::@menu-main-
 ::@menu-main-h Contracts
 :: ==========================================================================
 
-::@help cl, lds, /lds                cd %ldschurch% or c:\ldschurch or %UserProfile%\Documents\Development\Contracts\LDSChurch
-::@menu-main cl ldschurch
-:cd_cl
-:cd_lds
-:cd_/lds
-:cd_ldschurch
-:cd_/ldschurch
-    call :cdto ldschurch "%ldschurch%" c:\ldschurch "%UserProfile%\Documents\Development\Contracts\LDSChurch"
-    goto :eof
 
-::@help cla, abo                     cd %ldschurch%\areabook\src
-::@menu-main cla areabook\src
-:cd_cla
-:cd_areabook
-:cd_/areabook
-:cd_abo
-:cd_/abo
-    call :cdto ldschurch "%ldschurch%\areabook\src" c:\ldschurch\areabook\src "%UserProfile%\Documents\Development\Contracts\LDSChurch\areabook\src"
-    call abo init
-    goto :eof
-
-::@help co, obeo, /obeo              cd %%obeo%% or c:\obeo or %%UserProfile%%\Documents\Development\Contracts\Obeo
-::@menu-main co obeo
-:cd_co
-:cd_obeo
-:cd_/obeo
-    call :cdto obeo "%obeo%" c:\obeo "%UserProfile%\Documents\Development\Contracts\Obeo"
-    goto :eof
+:: TODO
 
 :: C:\Windows\System32\drivers\etc
 :: C:\bin\apps\Sublime Text\Data\Packages
