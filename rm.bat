@@ -2,12 +2,18 @@
 @echo off
 
 :init
+    set recycle_files=yes
+
     set cmds=
     set showname=
 
     if not "%~1"=="" goto :parse
 
-    del /?
+    if defined recycle_files (
+        recycle /?
+    ) else (
+        del /?
+    )
     endlocal && exit /B 0
 
 :parse
@@ -56,33 +62,37 @@
         )
     )
 
+    :: help
+
+    :: force
     if /i "!arg!"=="-f" (
-        set arg=/Y
+        if not defined recycle_files ( set arg=/Y ) else ( set "arg=/F" )
     ) else if /i "!arg!"=="--force" (
-        set arg=/Y
+        if not defined recycle_files ( set arg=/Y ) else ( set "arg=/F" )
     )
 
+    :: interactive
     if /i "!arg!"=="-i" (
         set arg=/P
     ) else if /i "!arg!"=="--interactive" (
         set arg=/P
     )
 
+    :: recursive
     if /i "!arg!"=="-r" (
         set arg=/S
     ) else if /i "!arg!"=="--recursive" (
         set arg=/S
     )
 
+    :: verbose
     if /i "!arg!"=="-v" (
         set arg=/-Q
     ) else if /i "!arg!"=="--verbose" (
         set arg=/-Q
     )
 
-    :: These are just shortcuts for the DEL command,
-    :: to make them more *nix-like..
-
+    :: quiet
     if /i "!arg!"=="-q" (
         set arg=/Q
     ) else if /i "!arg!"=="--quiet" (
@@ -100,7 +110,11 @@
 
     if defined showname echo del !cmds! && set "showname="
 
-    del %cmds%
+    if defined recycle_files (
+        recycle %cmds%
+    ) else (
+        del %cmds%
+    )
 
     endlocal && exit /B %errorlevel%
 
