@@ -15,13 +15,13 @@ There is no usage information (--help) provided by the script itself, so here it
 
 Here is an example:
 
+This exports the properties from 'Beyond Compare 3.lnk' shortcut to the 'Beyond Compare 3.txt' text file.
+
     $ exportlink.vbs "Beyond Compare 3.lnk" "Beyond Compare 3.txt"
 
-This exports the properties from 'Beyond Compare 3.lnk' to the 'Beyond Compare 3.txt' text file.
+This sets the properties in 'Beyond Compare 3.lnk' from the values in the 'Beyond Compare 3.txt' text file.
 
     $ exportlink.vbs --import "Beyond Compare 3.txt" "Beyond Compare 3.lnk"
-
-This sets the properties in 'Beyond Compare 3.lnk' from the values in the 'Beyond Compare 3.txt' text file.
 
 ### Sample output
 

@@ -5,9 +5,10 @@ On Error Goto 0
 ' and description (if applicable).
 '
 ' Copyright (C) 2013-2014 Kody Brown (@wasatchwizard)
+' Released under the MIT License.
 '
 ' USAGE:
-'   editlinks.vbs [/s|--recursive] [--path C:\somewhere] "replace" "with" ["replace" "with"] ["replace" "with"] ...
+'   [wscript.exe] editlinks.vbs [/s|--recursive] [--path C:\somewhere] "replace" "with" ["replace" "with"] ["replace" "with"] ...
 '
 ' NOTE:
 '   When retrieving the TargetPath from a shortcut, it will (sometimes?)

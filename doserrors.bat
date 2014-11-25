@@ -9,7 +9,7 @@ echo 00   00h   No error
 echo 01   01h   Function number invalid
 echo 02   02h   File not found
 echo 03   03h   Path not found
-echo 04   04h   Too many open tiles (no file handles available)
+echo 04   04h   Too many open files (no file handles available)
 echo 05   05h   Access denied
 echo 06   06h   Invalid handle
 echo 07   07h   Memory control block destroyed
