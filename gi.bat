@@ -1,1 +1,2 @@
-@"%~dp0git.bat" commit %*
+@rem git gi    git commit
+@git commit %*

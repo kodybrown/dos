@@ -1,8 +1,3 @@
-@echo off
-@rem "%~dp0git.bat" add %*
-
-if "%1"=="" (
-	"%~dp0git.bat" add .
-) else (
-	"%~dp0git.bat" add %*
-)
+@rem git ga    git add
+@if "%~1"=="" git add .
+@if not "~1"=="" git add %*

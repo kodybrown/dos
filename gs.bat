@@ -1,1 +1,2 @@
-@"%~dp0git.bat" status %*
+@rem git gs    git status
+@git status %*
