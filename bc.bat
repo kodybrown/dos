@@ -1,4 +1,4 @@
-@setlocal
+@setlocal EnableDelayedExpansion
 @echo off
 
 :init
@@ -8,10 +8,13 @@
 	set __quiet=
 	set /a __wait=1
 
-	set "args="
-	set "__bc="
+	set __bc=
+	set cmds=
+    set showname=
 
 :parse
+    if "%~1"=="" goto :main
+
 	if "%~1"=="/?" call :usage && endlocal && exit /B 0
 	if /i "%~1"=="--help" call :usage && endlocal && exit /B 0
 	if /i "%~1"=="-help" call :usage && endlocal && exit /B 0
@@ -26,9 +29,58 @@
 	if /i "%~1"=="-" set /a __wait=0 && shift && goto :parse
 	if /i "%~1"=="--" set /a __wait=0 && shift && goto :parse
 
+    set arg=%~1
+    rem echo !arg:~0,1!
+
+    rem :: If the argument contains '~/' then replace it with %UserProfile%
+    rem if "!arg:~0,2!"=="~\" (
+    rem     set arg=!arg:~/=%UserProfile%!
+    rem     echo arg=!arg!
+    rem )
+
+    :: My common shorcut/replacements..
+    if "!arg:~0,2!"=="//" (
+        set arg=%UserProfile%\!arg:~2!
+        set showname=true
+    )
+    if "!arg:~0,3!"=="/b/" (
+        set arg=%BIN%\!arg:~3!
+        set showname=true
+    )
+    if "!arg:~0,3!"=="/w/" (
+        set arg=%UserProfile%\Desktop\!arg:~3!
+        set showname=true
+    )
+    if "!arg:~0,3!"=="/e/" (
+        set arg=%UserProfile%\Desktop\!arg:~3!
+        set showname=true
+    )
+    if "!arg:~0,3!"=="/d/" (
+        set arg=%UserProfile%\Documents\!arg:~3!
+        set showname=true
+    )
+
+    :: If the argument doesn't start with a '/' or '-' then
+    :: replace all '/' characters with '\'..
+    if not "!arg:~0,1!"=="/" (
+        if not "!arg:~0,1!"=="-" (
+		    :: Replace dlb-backslashes with a single back-slash
+		    set arg=!arg:\\=\!
+		    :: Replace forward-slashes with back-slashes
+		    set arg=!arg:/=\!
+	        set showname=true
+	    )
+    )
+
+    set cmds=%cmds% %arg%
+
+    shift
+    goto :parse
+
 :main
 	rem call :findbc
-	set __bc=%bin%\apps\Beyond Compare 3\BCompare.exe
+	rem set __bc=%bin%\apps\Beyond Compare 3\BCompare.exe
+	set __bc=%bin%\apps\Beyond Compare 4\BCompare.exe
     rem echo __bc==%__bc%
 
 	if exist "%__bc%" (
@@ -36,9 +88,15 @@
 
 		rem if %__wait% EQU 0 start "beyond compare" "%__app%" /b "%__bc%" %*
 		rem if %__wait% NEQ 0 call "%__app%" /b "%__bc%" %*
-		start "%__app%" /b "%__bc%" %*
 
-	    endlocal && set "__bc=%__bc%" && exit /B 0
+        rem left-trim the input
+        for /f "tokens=* delims= " %%a in ("!cmds!") do set cmds=%%a
+
+		if defined showname echo "%__bc%" %cmds% && set "showname="
+
+		start "%__app%" /b "%__bc%" %cmds%
+
+	    endlocal && set "__bc=%__bc%" && exit /B %errorlevel%
 	)
 
 	echo Could not find %__app%
@@ -47,7 +105,7 @@
 :usage
 	echo %__batname% ^| Created 2010-2013 @wasatchwizard
 	echo        ^| Executes Beyond Compare, trying numerous install locations.
-	echo        ^| Tries to find v3, but will resort to v2 if necessary.
+	echo        ^| Tries to find v4, then v3, but will resort to v2 if necessary.
 	echo.
 	echo USAGE:
 	echo   %__batname% [options] file1 file2
@@ -66,22 +124,30 @@
 
 	goto :eof
 
-:findbc
-	rem Try to find v3 first..
-	if exist "%bin%\apps\Beyond Compare 3\BCompare.exe" set "__bc=%BIN%\apps\Beyond Compare 3\BCompare.exe" && goto :eof
-	if exist "C:\bin\apps\Beyond Compare 3\BCompare.exe" set "__bc=C:\bin\apps\Beyond Compare 3\BCompare.exe" && goto :eof
-	if exist "%Profile%\Root\apps\Beyond Compare 3\BCompare.exe" set "__bc=%Profile%\Root\apps\Beyond Compare 3\BCompare.exe" && goto :eof
-	if exist "T:\bin\apps\Beyond Compare 3\BCompare.exe" set "__bc=T:\root\apps\Beyond Compare 3\BCompare.exe" && goto :eof
-    if exist "C:\Program Files (x86)\Beyond Compare 3\BCompare.exe" set "__bc=c:\Program Files (x86)\Beyond Compare 3\BCompare.exe" && goto :eof
-	if exist "C:\Program Files\Beyond Compare 3\BCompare.exe" set "__bc=C:\Program Files\Beyond Compare 3\BCompare.exe" && goto :eof
-
-	rem Since, we couldn't find v3, so try v2 instead..
-	if exist "%bin%\apps\Beyond Compare 2\BC2.exe" set "__bc=%BIN%\apps\Beyond Compare 2\BC2.exe" && goto :eof
-	if exist "C:\bin\apps\Beyond Compare 2\BC2.exe" set "__bc=C:\bin\apps\Beyond Compare 2\BC2.exe" && goto :eof
-	if exist "C:\root\apps\Beyond Compare 2\BC2.exe" set "__bc=C:\root\apps\Beyond Compare 2\BC2.exe" && goto :eof
-	if exist "%Profile%\Root\apps\Beyond Compare 2\BC2.exe" set "__bc=%Profile%\Root\Apps\Beyond Compare 2\BC2.exe" && goto :eof
-	if exist "T:\bin\apps\Beyond Compare 3\BCompare.exe" set "__bc=T:\root\apps\Beyond Compare 3\BCompare.exe" && goto :eof
-	if exist "C:\Program Files (x86)\Beyond Compare 2\BC2.exe" set "__bc=C:\Program Files (x86)\Beyond Compare 2\BC2.exe" && goto :eof
-
-	set "__bc="
-	goto :eof
+ rem :findbc
+ rem 	rem Try to find v4 first..
+ rem     if exist "%bin%\apps\Beyond Compare 4\BCompare.exe" set "__bc=%BIN%\apps\Beyond Compare 4\BCompare.exe" && goto :eof
+ rem     if exist "C:\bin\apps\Beyond Compare 4\BCompare.exe" set "__bc=C:\bin\apps\Beyond Compare 4\BCompare.exe" && goto :eof
+ rem     if exist "%Profile%\Root\apps\Beyond Compare 4\BCompare.exe" set "__bc=%Profile%\Root\apps\Beyond Compare 4\BCompare.exe" && goto :eof
+ rem     if exist "T:\bin\apps\Beyond Compare 4\BCompare.exe" set "__bc=T:\root\apps\Beyond Compare 4\BCompare.exe" && goto :eof
+ rem     if exist "C:\Program Files (x86)\Beyond Compare 4\BCompare.exe" set "__bc=c:\Program Files (x86)\Beyond Compare 4\BCompare.exe" && goto :eof
+ rem     if exist "C:\Program Files\Beyond Compare 4\BCompare.exe" set "__bc=C:\Program Files\Beyond Compare 4\BCompare.exe" && goto :eof
+ rem
+ rem     rem Try to find v3..
+ rem 	if exist "%bin%\apps\Beyond Compare 3\BCompare.exe" set "__bc=%BIN%\apps\Beyond Compare 3\BCompare.exe" && goto :eof
+ rem 	if exist "C:\bin\apps\Beyond Compare 3\BCompare.exe" set "__bc=C:\bin\apps\Beyond Compare 3\BCompare.exe" && goto :eof
+ rem 	if exist "%Profile%\Root\apps\Beyond Compare 3\BCompare.exe" set "__bc=%Profile%\Root\apps\Beyond Compare 3\BCompare.exe" && goto :eof
+ rem 	if exist "T:\bin\apps\Beyond Compare 3\BCompare.exe" set "__bc=T:\root\apps\Beyond Compare 3\BCompare.exe" && goto :eof
+ rem     if exist "C:\Program Files (x86)\Beyond Compare 3\BCompare.exe" set "__bc=c:\Program Files (x86)\Beyond Compare 3\BCompare.exe" && goto :eof
+ rem 	if exist "C:\Program Files\Beyond Compare 3\BCompare.exe" set "__bc=C:\Program Files\Beyond Compare 3\BCompare.exe" && goto :eof
+ rem
+ rem 	rem May as well try v2..
+ rem 	if exist "%bin%\apps\Beyond Compare 2\BC2.exe" set "__bc=%BIN%\apps\Beyond Compare 2\BC2.exe" && goto :eof
+ rem 	if exist "C:\bin\apps\Beyond Compare 2\BC2.exe" set "__bc=C:\bin\apps\Beyond Compare 2\BC2.exe" && goto :eof
+ rem 	if exist "C:\root\apps\Beyond Compare 2\BC2.exe" set "__bc=C:\root\apps\Beyond Compare 2\BC2.exe" && goto :eof
+ rem 	if exist "%Profile%\Root\apps\Beyond Compare 2\BC2.exe" set "__bc=%Profile%\Root\Apps\Beyond Compare 2\BC2.exe" && goto :eof
+ rem 	if exist "T:\bin\apps\Beyond Compare 3\BCompare.exe" set "__bc=T:\root\apps\Beyond Compare 3\BCompare.exe" && goto :eof
+ rem 	if exist "C:\Program Files (x86)\Beyond Compare 2\BC2.exe" set "__bc=C:\Program Files (x86)\Beyond Compare 2\BC2.exe" && goto :eof
+ rem
+ rem 	set "__bc="
+ rem 	goto :eof
