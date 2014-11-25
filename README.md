@@ -184,7 +184,7 @@ Also, check out the sections above on aliases and history.
 This little utility is particularly useful as a Beyond Compare File Format.
 
 * [__exportlink.vbs__](https://github.com/kodybrown/dos/blob/master/exportlink.vbs) » updates the properties of the specified links (shortcuts) including the target, arguments, directory, icon, description, hotkey, and windowstyle.
-[Documentation](https://github.com/kodybrown/dos/blob/master/exportlink.vbs.md)
+* [Documentation](https://github.com/kodybrown/dos/blob/master/exportlink.vbs.md)
 * [__updatelinks.vbs__](https://github.com/kodybrown/dos/blob/master/exportlink.vbs) » replaces properties of .lnk files.
 * [Documentation](https://github.com/kodybrown/dos/blob/master/updatelinks.vbs.md)
 
