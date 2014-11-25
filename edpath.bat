@@ -3,12 +3,14 @@
 
 :init
     set batname=%~n0
-    set __debug=
-    set __pause=
-    set __force=
-    set __prepend=
-    set __remove=
-    set __newdir=
+    set "__quiet="
+    set "__debug="
+    set "__pause="
+    set "__force="
+    set "__prepend="
+    set "__remove="
+    set "__newdir="
+    set "__newpath="
 
 :parse
     if "%~1"=="" goto :main
@@ -19,6 +21,10 @@
     if /i "%~1"=="/?" call :usage && endlocal && exit /B 0
     if /i "%~1"=="/h" call :usage && endlocal && exit /B 0
     if /i "%~1"=="/help" call :usage && endlocal && exit /B 0
+
+    if /i "%~1"=="--quiet" set "__quiet=1" && shift && goto :parse
+    if /i "%~1"=="-quiet" set "__quiet=1" && shift && goto :parse
+    if /i "%~1"=="/quiet" set "__quiet=1" && shift && goto :parse
 
     if /i "%~1"=="--debug" set "__debug=1" && shift && goto :parse
     if /i "%~1"=="-debug" set "__debug=1" && shift && goto :parse
@@ -58,44 +64,53 @@
     if "%__newdir%"=="" endlocal && exit /B 1
 
     if defined __debug (
-        echo ARGS: debug is turned on..
-        echo ARGS: location: !__newdir!
+        call :println ARGS: debug is turned on..
+        call :println ARGS: location: !__newdir!
         if defined __remove (
-            echo ARGS: remove location from path..
+            call :println ARGS: remove location from path..
         ) else (
-            if defined __prepend echo ARGS: insert location at begining of path..
-            if not defined __prepend echo ARGS: append location to end of path..
+            if defined __prepend call :println ARGS: insert location at begining of path..
+            if not defined __prepend call :println ARGS: append location to end of path..
         )
-        if defined __force echo ARGS: force new location into path..
-        if defined __pause echo ARGS: pause is turned on..
+        if defined __force call :println ARGS: force new location into path..
+        if defined __pause call :println ARGS: pause is turned on..
     )
 
     set tmpfile=%TEMP%\edpath_bat_%random%_%random%_%random%.tmp
 
-    if defined __debug echo Checking if `%__newdir%` is already in the path
+    :: TODO trim any trailing semi-colon's from `__newdir`.
+
+    if defined __debug call :println Checking if `%__newdir%` is already in the path
     echo ;%PATH%; | C:\Windows\System32\find.exe /C /I ";%__newdir%;" >"%tmpfile%"
     set /P path_exists=<"%tmpfile%"
 
     if exist "%tmpfile%" del /Q "%tmpfile%"
+    set "tmpfile="
 
     if defined __remove (
         if "%path_exists%"=="0" (
-            echo The location is not in the path..
+            call :println The location is not in the path..
         ) else (
             call :removefrompath
         )
     ) else (
         if "%path_exists%"=="0" (
-            echo The location is not in the path..
+            call :println The location is not in the path.. adding..
             call :addtopath
         ) else (
-            if defined __debug echo The location already exists..
+            if defined __debug call :println The location already exists..
             if defined __force (
-                if defined __debug echo Forcing the new location into the path..
+                if defined __debug call :println Removing existing entry for `%__newdir%`,
+                call :removefrompath
+                set "PATH=!__newpath!"
+
+                if defined __debug call :println Adding the new location into the path..
                 call :addtopath
             ) else (
-                echo Use the following to force the new location onto the path:
-                echo     %batname% --force [--prepend^|--append] "%__newdir%"
+                if not defined __debug call :println The location already exists..
+                call :println Use the following to force the new location onto the path:
+                if defined __prepend call :println     %batname% --force --prepend "%__newdir%"
+                if not defined __prepend call :println     %batname% --force --append "%__newdir%"
             )
         )
     )
@@ -103,8 +118,8 @@
     if defined __pause pause
 
     if defined __pathchanged (
-        set "__fullpath=%PATH%"
-        endlocal && set "PATH=%__fullpath%" && exit /B 0
+        if defined __debug call :println Updating PATH envar..
+        endlocal && set "PATH=%__newpath%" && exit /B 0
     ) else (
         endlocal && exit /B 0
     )
@@ -154,10 +169,16 @@
 
     goto :eof
 
+:println
+    if not defined __quiet echo %*
+    goto :eof
+
 :addtopath
-    if defined __debug echo Adding location to path..
-    if defined __prepend set PATH=%__newdir%;%path%
-    if not defined __prepend set PATH=%path%;%__newdir%
+    if defined __debug call :println Adding location to path..
+
+    if defined __prepend set __newpath=%__newdir%;%path%
+    if not defined __prepend set __newpath=%path%;%__newdir%
+
     set __pathchanged=1
     goto :eof
 
@@ -170,13 +191,13 @@
         if "!loc!"=="" (
             rem do nothing
         ) else if /i "!loc!"=="!__newdir!" (
-            rem do nothing
+            rem Skip the new dir.
+            rem ie: do not add it to the new path var.
         ) else (
             set __newpath=!__newpath!!loc!;
         )
     )
 
-    set PATH=%__newpath%
     set __pathchanged=1
     goto :eof
 
