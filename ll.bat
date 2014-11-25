@@ -1,0 +1,1 @@
+@call ls.bat -l %*
