@@ -7,6 +7,7 @@ rem +++++++++++++++++++
 rem  REQUIRES:
 rem    sdelete.exe
 rem  OPTIONAL:
+rem    pcolor.exe
 rem    sleep.exe
 rem +++++++++++++++++++
 
@@ -23,7 +24,8 @@ if "%~1"=="" goto :fileisrequired
     if exist "%~1" call :delfile "%~1" && shift && goto :done
 
     :doesntexist
-        call pcolor.exe --crlf {Red}FAILED! \n {Gray}The specified file or folder was not found. \n
+        if exist pcolor.exe call pcolor.exe --crlf {Red}FAILED! \n {Gray}The specified file or folder was not found. \n
+        if not exist pcolor.exe echo FAILED! The specified file or folder was not found.
         shift
         goto :parse
 
@@ -36,7 +38,6 @@ if "%~1"=="" goto :fileisrequired
     call pcolor.exe --crlf {White}STARTING: \n {Gray}Securely deleting the specified folder "%~1".. \n
     attrib -r -h -s "%~1\*.*" /S /D /L
     sdelete -s -p %PASSES% "%~1\*.*"
-    rem if exist "%~1\" rd /S "%~1"
     goto :eof
 
 :delfile
@@ -59,6 +60,7 @@ if "%~1"=="" goto :fileisrequired
 :end
     call pcolor.exe --crlf {White}FINISHED! \n
     if not defined __quiet (
-        if exist "%bin%\sleep.exe" ( "%bin%\sleep.exe" 350 ) else ( pause )
+        if exist "%bin%\sleep.exe" "%bin%\sleep.exe" 350
+        if not exist "%bin%\sleep.exe" pause
     )
     endlocal && exit /B 0
