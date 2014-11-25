@@ -8,8 +8,14 @@ On Error Goto 0
 ' Released under the MIT License.
 '
 ' USAGE:
-'   exportlink.vbs [--export] "input.lnk" "output.txt"
-'   exportlink.vbs --import "input.txt" "output.lnk" "original-shortcut.lnk"
+'   [wscript.exe] exportlink.vbs [--export] "input.lnk" "output.txt"
+'   [wscript.exe] exportlink.vbs --update "input.txt" "output.lnk" "original-shortcut.lnk"
+'
+' USE as a Beyond Compare helper:
+'  Loading:
+'    wscript.exe Helpers\exportlink.vbs --export %s %t
+'  Saving:
+'    wscript.exe Helpers\exportlink.vbs --update %s %t
 '
 
 ' Objects
@@ -26,6 +32,7 @@ Const WindowNormal = 1, WindowMinimized = 2, WindowMaximized = 3
 Dim OptVerbose : OptVerbose = False
 Dim OptUpdateLink : OptUpdateLink = False
 Dim OptOverwriteLink : OptOverwriteLink = False
+Dim OptEditFile : OptEditFile = False
 
 ' Settings
 Dim File1 : File1 = ""
@@ -47,6 +54,8 @@ If args.Count > 0 Then
                 OptUpdateLink = True
             ElseIf StrComp(a, "overwrite", vbTextCompare) = 0 Or StrComp(a, "replace", vbTextCompare) = 0 Then
                 OptOverwriteLink = True
+            ElseIf StrComp(a, "edit", vbTextCompare) = 0 Then
+                OptEditFile = True
             ElseIf StrComp(a, "export", vbTextCompare) = 0 Then
                 OptUpdateLink = False
             Else
@@ -64,7 +73,16 @@ If args.Count > 0 Then
     Next
 End If
 
-If OptUpdateLink Or OptOverwriteLink Then
+If OptEditFile Or (Not OptUpdateLink And Not OptOverwriteLink And Len(File1) > 0 And Len(File2) = 0) Then
+    ' If there is no command (update/edit/export/etc.)
+    ' and there is only one file specified, --edit is assumed!
+    If Len(File1) = 0 Then
+        WScript.Echo "Missing shortcut-file (first argument). Must be a shortcut file (*.lnk)."
+        WScript.Quit(41)
+    End If
+
+    EditLink File1
+ElseIf OptUpdateLink Or OptOverwriteLink Then
     If Len(File1) = 0 Then
         WScript.Echo "Missing text-file (first argument). Must be a text file (*.txt)."
         WScript.Quit(21)
@@ -78,6 +96,8 @@ Else
     If Len(File1) = 0 Then
         WScript.Echo "Missing shortcut-file (first argument). Must be a shortcut file (*.lnk)."
         WScript.Quit(31)
+    ' This will never get run, because if there is no command (update/edit/export/etc.)
+    ' and there is only one file specified, --edit is assumed!
     ElseIf Len(File2) = 0 Then
         WScript.Echo "Missing text-file (second argument). Must be a text file (*.txt)."
         WScript.Quit(32)
@@ -99,6 +119,24 @@ WScript.Quit(0)
 '--------------------------------------------------------------------
 ' Methods
 '--------------------------------------------------------------------
+
+Sub EditLink( shortcutFile )
+    ' (1) This will export the shortcut to a text-file,
+    ' (2) edit the text-file in Notepad2,
+    ' (3) then put the new settings back into the shortcut.
+
+    Dim tmpFile
+
+    ' (1)
+    tmpFile = CreateTempFile()
+    ExportLink shortcutFile, tmpFile
+
+    ' (2)
+    wso.Run """%bin%\Notepad2.exe"" """ & tmpFile & """", 1, True
+
+    ' (3)
+    UpdateLink tmpFile, shortcutFile
+End Sub
 
 Sub UpdateLink( textFile, shortcutFile )
     Dim FileReader, link
@@ -229,3 +267,8 @@ Sub ExportLink( shortcutFile, textFile )
 
     Set link = Nothing
 End Sub
+
+Function CreateTempFile
+    Const TemporaryFolder = 2
+    CreateTempFile = fso.GetSpecialFolder(TemporaryFolder) & "\" & fso.GetTempName()
+End Function
