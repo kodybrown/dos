@@ -1,4 +1,5 @@
 ::!/dos/rocks!
+@rem setlocal EnableDelayedExpansion
 @echo off
 
 :: c.bat
@@ -17,6 +18,9 @@ goto :init
     echo.
     echo   c             Shows the current path (like the normal cd)
     echo   c --          Shows the menu
+    echo.
+    echo   c n           Switches to that directory session.
+    echo                 Where `n` is 1 thru 9.
     echo.
     echo NOTES:
     echo.
@@ -38,7 +42,6 @@ goto :init
 
     rem for /f "usebackq tokens=*" %%g in ("%~f0") do @for /f "tokens=1,* delims= " %%h in ("%%g") do @if "%%h"=="::@help" @echo.  %%i
 
-    rem exit /B 0
     goto :end
 
 :init
@@ -51,6 +54,20 @@ goto :init
 
     :: Collect any options for the real CD command.
     set "options="
+
+    :: Directory sessions
+    set "is_session="
+    if not defined C_SESSION_CUR set C_SESSION_CUR=1
+    if not defined C_SESSION_1 set C_SESSION_0=%CD%
+    if not defined C_SESSION_1 set C_SESSION_1=C:\bin
+    if not defined C_SESSION_2 set C_SESSION_2=%UserProfile%\
+    if not defined C_SESSION_3 set C_SESSION_3=%UserProfile%\Desktop
+    if not defined C_SESSION_4 set C_SESSION_4=%UserProfile%\Documents
+    if not defined C_SESSION_5 set C_SESSION_5=C:\downloads
+    if not defined C_SESSION_6 set C_SESSION_6=C:\dev
+    if not defined C_SESSION_7 set C_SESSION_7=C:\installers
+    if not defined C_SESSION_8 set C_SESSION_8=C:\tools
+    if not defined C_SESSION_9 set C_SESSION_9=C:\
 
     if "%~1"=="?" goto :usage
     if "%~1"=="/?" goto :usage
@@ -70,10 +87,32 @@ goto :init
    :skip_a
     if "%arg%"=="" goto :end
 
+rem echo 1 C_SESSION_CUR = %C_SESSION_CUR%
+rem echo 1 C_SESSION_%C_SESSION_CUR% = !CD!
+rem 
+rem (   setlocal EnableDelayedExpansion
+rem     echo C_SESSION_%C_SESSION_CUR% = %C_SESSION_%C_SESSION_CUR%%
+rem     echo C_SESSION_%C_SESSION_CUR% = !C_SESSION_!C_SESSION_CUR!!
+rem     echo C_SESSION_%C_SESSION_CUR% = !C_SESSION_CUR!
+rem     echo C_SESSION_%C_SESSION_CUR% = !CD!
+rem 
+rem )
+rem ( endlocal
+rem 
+rem )
+rem     :: Directory sessions
+rem     if %~1 GEQ 0 if %~1 LEQ 9 (
+rem         set "C_SESSION_CUR=%~1"
+rem         cd "%C_SESSION_%~1%"
+rem         set "is_session=yes"
+rem         shift
+rem         goto :p
+rem     )
+
     set arg2=%arg:~0,2%
     set arg3=%arg:~0,3%
 
-    if "%arg%"=="\" cd\ && shift && goto :p
+    if "%arg%"=="\" cd\ && set "%C_SESSION_%C_SESSION_CUR%%=%CD%" && echo %C_SESSION_1% && shift && goto :p
 
     for /l %%i in (1,1,31) do if "!arg:~-1!"==" " set arg=!arg:~0,-1!
 
@@ -101,10 +140,10 @@ goto :init
     if exist "%arg%" (
         if "%arg:~1,1%"==":" (
             cd /D "%arg%"
-            if %errorlevel% EQU 0 shift && goto :p
+            if %errorlevel% EQU 0 set "%C_SESSION_%C_SESSION_CUR%%=%CD%" && shift && goto :p
         )
         cd "%arg%"
-        if %errorlevel% EQU 0 shift && goto :p
+        if %errorlevel% EQU 0 set "%C_SESSION_%C_SESSION_CUR%%=%CD%" && shift && goto :p
     )
 
     :: Save as a normal CD option.
@@ -119,9 +158,10 @@ goto :init
         if defined options (
             rem echo 2 call cd %options%
             call cd %options%
+            set "%C_SESSION_%C_SESSION_CUR%%=%CD%"
         )
     ) else if not defined curmenu (
-        echo %CD%
+        rem echo %CD%
     )
 
     set "arg="
@@ -134,6 +174,7 @@ goto :init
     set "menu="
     set "input="
 
+    rem endlocal && popd /D %CD% && exit /B 0
     exit /B 0
 
 :show-menu
@@ -186,7 +227,7 @@ goto :init
             set "output=!output!%indent%==========================\n"
             set "output=!output!%indent%         {Cyan}cd menu{Gray}\n"
             set "output=!output!%indent%--------------------------\n"
-            set "output=!output!%indent% {White}1{Gray})add  {White}2{Gray})edit  {White}3{Gray})refresh\n"
+            set "output=!output!%indent% {White}+{Gray})add  {White}${Gray})edit  {White}%{Gray})refresh\n"
             set "output=!output!%indent%      {White}?{Gray})help  {White}q{Gray})uit\n"
             set "output=!output!%indent%--------------------------\n"
         ) else (
@@ -249,7 +290,7 @@ goto :init
     shift
    :cdto_loop
     if "%~1"=="" if "%~2"== "" ( goto :cdto_end ) else ( shift && goto :cdto_loop )
-    if exist "%~1" pushd "%~1" && goto :eof
+    if exist "%~1" pushd "%~1" && set "%C_SESSION_%C_SESSION_CUR%%=%CD%" && goto :eof
     shift && goto :cdto_loop
    :cdto_end
     echo couldn't find: %~1 && goto :eof
@@ -332,15 +373,15 @@ goto :init
 :: ## HANDLERS ##
 ::
 
-:cd_1
-    echo NotImplemented()
+:cd_+
+    echo NotImplemented^(^)
     goto :eof
 
-:cd_2
-    echo NotImplemented()
+:cd_$
+    echo NotImplemented^(^)
     goto :eof
 
-:cd_3
+:cd_%
     goto :menu-main
 
 :cd_?
@@ -359,6 +400,7 @@ goto :init
 ::@menu-more / root of cur drive
 :cd_/
     cd\
+    set "%C_SESSION_%C_SESSION_CUR%%=%CD%"
     goto :eof
 
 ::
@@ -539,7 +581,7 @@ rem ::@menu-main-
 
     :: Yes, that month at the end is correct.. it is acting like an array..
     echo "%UserProfile%\Documents\Journal\(Dates)\%yy%\%mm% - %month%mm%%"
-    call :cdto curmo "%UserProfile%\Documents\Journal\(Dates)\%yy%"
+    call :cdto lastmo "%UserProfile%\Documents\Journal\(Dates)\%yy%"
 
     rem call :clear_datevars
     rem call :clear_timevars
@@ -558,7 +600,7 @@ rem ::@menu-main-
 
     :: Yes, that month at the end is correct.. it is acting like an array..
     echo "%UserProfile%\Documents\Journal\(Dates)\%yy%\%mm% - %month%mm%%"
-    call :cdto curmo "%UserProfile%\Documents\Journal\(Dates)\%yy%"
+    call :cdto nextmo "%UserProfile%\Documents\Journal\(Dates)\%yy%"
 
     rem call :clear_datevars
     rem call :clear_timevars

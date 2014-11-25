@@ -1,1 +1,1 @@
-@"%~dp0edit.bat" --editor "%bin%\apps\Notepad++\notepad++.exe" %*
+@"%~dp0edit.bat" %* --editor "%bin%\apps\Notepad++\notepad++.exe" --force
