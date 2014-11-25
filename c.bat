@@ -137,51 +137,96 @@ goto :init
     exit /B 0
 
 :show-menu
-    set curmenu=%~1
+    rem    set curmenu=%~1
 
-    if /i "%curmenu%"=="main" (
-        echo %indent%==========================
-        echo %indent%         cd menu
-        echo %indent%--------------------------
-        echo %indent% 1^)add  2^)edit  3^)refresh
-        echo %indent%      ?^)help  q^)uit
-        echo %indent%--------------------------
-    ) else (
-        echo %indent%==========================
-        echo %indent%      :%curmenu% menu
-        echo %indent%--------------------------
-    )
-    echo.
+    rem    if /i "%curmenu%"=="main" (
+    rem        echo %indent%==========================
+    rem        echo %indent%         cd menu
+    rem        echo %indent%--------------------------
+    rem        echo %indent% 1^)add  2^)edit  3^)refresh
+    rem        echo %indent%      ?^)help  q^)uit
+    rem        echo %indent%--------------------------
+    rem    ) else (
+    rem        echo %indent%==========================
+    rem        echo %indent%      :%curmenu% menu
+    rem        echo %indent%--------------------------
+    rem    )
+    rem    echo.
 
-    :: Loop through this file and output all menu lines;
-    :: lines that start with `::@menu-%curmenu%*`
-    for /f "usebackq tokens=*" %%g in ("%~f0") do @for /f "tokens=1,2,* delims= " %%h in ("%%g") do (
-        rem if "%%h"=="::@menu-%curmenu%" echo.%pad%%%i^) %%j
-        if "%%~i"== "" (
-            if "%%h"=="::@menu-%curmenu%" echo.%pad%   %%j
+    rem    :: Loop through this file and output all menu lines;
+    rem    :: lines that start with `::@menu-%curmenu%*`
+    rem    for /f "usebackq tokens=*" %%g in ("%~f0") do @for /f "tokens=1,2,* delims= " %%h in ("%%g") do (
+    rem        rem if "%%h"=="::@menu-%curmenu%" echo.%pad%%%i^) %%j
+    rem        if "%%~i"=="" (
+    rem            if "%%h"=="::@menu-%curmenu%" echo.%pad%%%j
+    rem        ) else (
+    rem            if "%%h"=="::@menu-%curmenu%" echo.%pad%%%i^) %%j
+    rem        )
+    rem        rem if "%%h"=="::@menu-%curmenu%-h" echo.%pad:~1%[%%i]
+    rem        rem if "%%h"=="::@menu-%curmenu%-h" pcolor -s {White} && echo.%pad:~1%[%%i] && pcolor -s {Gray}
+    rem        rem if "%%h"=="::@menu-%curmenu%-h" pcolor --crlf "{White}%pad:~1%[%%i]\n"
+    rem        if "%%h"=="::@menu-%curmenu%-h" pcolor --crlf "{White}%pad%%%i\n"
+    rem        if "%%h"=="::@menu-%curmenu%-" echo.
+    rem    )
+
+    rem    echo.
+    rem    if /i not "%curmenu%"=="main" (
+    rem        echo %indent%--------------------------
+    rem        echo %indent%  .^)main  ?^)help  q^)uit
+    rem    )
+    rem    echo %indent%==========================
+
+    (
+        setlocal EnableDelayedExpansion
+
+        set "curmenu=%~1"
+        set "output="
+
+        if /i "!curmenu!"=="main" (
+            set "output=!output!%indent%==========================\n"
+            set "output=!output!%indent%         {Cyan}cd menu{Gray}\n"
+            set "output=!output!%indent%--------------------------\n"
+            set "output=!output!%indent% {White}1{Gray})add  {White}2{Gray})edit  {White}3{Gray})refresh\n"
+            set "output=!output!%indent%      {White}?{Gray})help  {White}q{Gray})uit\n"
+            set "output=!output!%indent%--------------------------\n"
         ) else (
-            if "%%h"=="::@menu-%curmenu%" echo.%pad%%%i^) %%j
+            set "output=!output!%indent%==========================\n"
+            set "output=!output!%indent%      {Cyan}!curmenu! menu{Gray}\n"
+            set "output=!output!%indent%--------------------------\n"
         )
-        if "%%h"=="::@menu-%curmenu%-h" echo.%pad:~1%%%i
-        if "%%h"=="::@menu-%curmenu%-" echo.
-    )
+        set "output=!output!\n"
 
-    rem if "%~1"=="" set "link=  "
-    rem if not "%~1"=="" set "link=.)main"
-    rem echo %indent%  %link%  ?)help  q)uit
-    rem set "link="
+        :: Loop through this file and output all menu lines;
+        :: lines that start with `::@menu-!curmenu!*`
+        for /f "usebackq tokens=*" %%g in ("%~f0") do @for /f "tokens=1,2,* delims= " %%h in ("%%g") do (
+            if "%%~i"=="" (
+                if "%%h"=="::@menu-!curmenu!" set "output=!output!{Gray}%pad%%%j\n"
+            ) else (
+                if "%%h"=="::@menu-!curmenu!" set "output=!output!{Gray}%pad%{White}%%i) {Gray}%%j\n"
+            )
+            rem if "%%h"=="::@menu-!curmenu!-h" echo.%pad:~1%[%%i]
+            rem if "%%h"=="::@menu-!curmenu!-h" pcolor -s {White} && echo.%pad:~1%[%%i] && pcolor -s {Gray}
+            rem if "%%h"=="::@menu-!curmenu!-h" pcolor --crlf "{White}%pad:~1%[%%i]\n"
+            if "%%h"=="::@menu-!curmenu!-h" set "output=!output!{Yellow}%pad:~1%%%i\n"
+            if "%%h"=="::@menu-!curmenu!-" set "output=!output!\n"
+        )
+        set "output=!output!\n"
 
-    echo.
-    if /i not "%curmenu%"=="main" (
-        echo %indent%--------------------------
-        echo %indent%  .^)main  ?^)help  q^)uit
+        if /i not "%curmenu%"=="main" (
+            set "output=!output!%indent%--------------------------\n"
+            set "output=!output!%indent%  {White}.{Gray})main  {White}?{Gray})help  {White}q{Gray})uit\n"
+        )
+        set "output=!output!%indent%==========================\n"
+
+        pcolor --crlf "!output!"
+
+        endlocal
     )
-    echo %indent%==========================
 
     goto :handle_input main
 
 :handle_input
-    set menu=%~1
+    set "menu=%~1"
     set "input="
 
     where pcolor >NUL 2>&1
@@ -189,6 +234,9 @@ goto :init
         pcolor "%pad%> "
         set /p "input="
     ) else (
+        :: Leave this code here, even though I always assume
+        :: that pcolor is available.. That was difficult to
+        :: figure out!!
         <nul (set/p "input=.%pad:~1%> ")
     )
 
@@ -333,7 +381,7 @@ goto :init
     goto :eof
 
 ::@help r, /root                     cd %UserProfile%\Root or <bin>
-::@menu-more r Root (or bin)
+::@menu-more r Root
 :cd_r
 :cd_/root
     call :cdto root "%UserProfile%\Root" "%bin%"
@@ -354,6 +402,10 @@ rem ::@menu-main-h
     call :cdto home "%UserProfile%" "%bin%"
     goto :eof
 
+:: ==========================================================================
+::@menu-more-h User-folders
+:: ==========================================================================
+
 ::@help /appdata                     cd %UserProfile%\AppData
 ::@menu-more "" /appdata
 :cd_/appdata
@@ -370,6 +422,13 @@ rem ::@menu-main-h
 ::@menu-more "" /local
 :cd_/local
     call :cdto local "%UserProfile%\AppData\Local"
+    goto :eof
+
+::@help /shims                       cd C:\Users\Kody\AppData\Local\scoop\shims
+::@menu-more "" /shims (scoop/shims)
+:cd_shims
+:cd_/shims
+    call :cdto shims "%LocalAppData%\scoop\shims"
     goto :eof
 
 ::
@@ -513,10 +572,10 @@ rem ::@menu-main-
     call :cdto journal "%UserProfile%\Documents\Journal\Serial numbers"
     goto :eof
 
-::
+:: ==========================================================================
 rem ::@menu-main-
 ::@menu-main-h Contracts
-::
+:: ==========================================================================
 
 ::@help cl, lds, /lds                cd %ldschurch% or c:\ldschurch or %UserProfile%\Documents\Development\Contracts\LDSChurch
 ::@menu-main cl ldschurch
@@ -528,7 +587,18 @@ rem ::@menu-main-
     call :cdto ldschurch "%ldschurch%" c:\ldschurch "%UserProfile%\Documents\Development\Contracts\LDSChurch"
     goto :eof
 
-::@help co, obeo. /obeo              cd %%obeo%% or c:\obeo or %%UserProfile%%\Documents\Development\Contracts\Obeo
+::@help cla, abo                     cd %ldschurch%\areabook\src
+::@menu-main cla areabook\src
+:cd_cla
+:cd_areabook
+:cd_/areabook
+:cd_abo
+:cd_/abo
+    call :cdto ldschurch "%ldschurch%\areabook\src" c:\ldschurch\areabook\src "%UserProfile%\Documents\Development\Contracts\LDSChurch\areabook\src"
+    call abo init
+    goto :eof
+
+::@help co, obeo, /obeo              cd %%obeo%% or c:\obeo or %%UserProfile%%\Documents\Development\Contracts\Obeo
 ::@menu-main co obeo
 :cd_co
 :cd_obeo
@@ -536,13 +606,14 @@ rem ::@menu-main-
     call :cdto obeo "%obeo%" c:\obeo "%UserProfile%\Documents\Development\Contracts\Obeo"
     goto :eof
 
+:: C:\Windows\System32\drivers\etc
+:: C:\bin\apps\Sublime Text\Data\Packages
 
-:: Util folders
 
-rem C:\Users\Kody\AppData\Local\scoop\shims
-rem C:\Windows\System32\drivers\etc
-rem C:\bin\apps\Sublime Text\Data\Packages
 
+
+:: ==========================================================================
+:: ==========================================================================
 
 ::@menu-main-
 ::@menu-main m more
