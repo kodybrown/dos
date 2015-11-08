@@ -10,7 +10,7 @@
 :: This batch requires [`openssl.exe`](http://www.openssl.org/) to be in your path.
 :: You can get Windows binaries (or an installer) from the following:
 :: * [Binary Distributions](http://www.openssl.org/related/binaries.html)
-:: ** [Shining Light Productions](http://slproweb.com/products/Win32OpenSSL.html)
+:: * [Shining Light Productions](http://slproweb.com/products/Win32OpenSSL.html)
 :: * [gnuwin32 openssl](http://gnuwin32.sourceforge.net/packages/openssl.htm)
 
 :: I highly recommended that you also have [`sdelete.exe`](http://technet.microsoft.com/en-us/sysinternals/bb897443.aspx)
@@ -19,20 +19,20 @@
 
 :: You can change the encryption method here, however, I'm pretty sure that `aes-256-cbc`
 :: is about the best. Type `openssl --help` to see all options.
-set cipher=aes-256-cbc
+set "cipher=aes-256-cbc"
 
 :main
     if "%~1"=="" goto :usage
     if "%~1"=="/?" goto :usage
     if "%~1"=="--help" goto :usage
 
-    set infile=%~1
-    set tmpfile=%~1.decrypted
+    set "infile=%~1"
+    set "tmpfile=%~1.decrypted"
     if not "%~2"=="" (
-        set outfile=%~2
+        set "outfile=%~2"
     )
     if "%~2"=="" (
-        set outfile=%~1
+        set "outfile=%~1"
     )
 
     :: The 'decrypting' text was created by [asciimo](https://github.com/Marak/asciimo).
@@ -54,28 +54,28 @@ set cipher=aes-256-cbc
     echo        output: %outfile%
     echo.
 
-    where.exe openssl >NUL
-    if %errorlevel% neq 0 (
-        echo Could not find openssl...
-        echo Is it in your path?
+    where.exe /Q openssl
+    if %errorlevel% NEQ 0 (
+        echo Could not find openssl.exe...
+        echo Is it in your PATH?
         echo exiting.
         pause
         @endlocal && exit /B %errorlevel%
     )
 
     call openssl %cipher% -d -a -in "%infile%" -out "%tmpfile%"
-    if %errorlevel% neq 0 (
-        echo There as an error running openssl.
+    if %errorlevel% NEQ 0 (
+        echo There was an error running openssl.
         echo exiting...
         pause
         @endlocal && exit /B %errorlevel%
     )
 
-    where.exe sdelete.exe >NUL
-    if %errorlevel% neq 0 (
+    where.exe /Q sdelete.exe
+    if %errorlevel% NEQ 0 (
         echo Could not find sdelete.exe...
         echo It is more secure to use sdelete, rather than DEL.
-        echo Please put it in your path.
+        echo Please put it in your PATH.
         pause
         call del /Q "%outfile%" >NUL
     ) else (
